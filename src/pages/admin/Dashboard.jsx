@@ -4,7 +4,7 @@ function Home() {
   const [users, setUsers] = React.useState([]);
 
   useEffect(() => {}, []);
-  return <div>home</div>;
+  return <div>try try try try</div>;
 }
 
 export default Home;
