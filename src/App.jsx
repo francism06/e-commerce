@@ -1,17 +1,26 @@
 import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import Dashboard from "./pages/admin/Dashboard";
-import Home from "./pages/user/Home";
+// Routes
 import NavBar from './components/NavBar';
 import AdminNavBar from "./components/AdminNavBar";
+
+// Admin Components
+import Dashboard from "./pages/admin/Dashboard";
+import Products from "./pages/admin/Products"
+import Services from "./pages/admin/Services"
+import Transactions from "./pages/admin/Transactions"
+
+// User Components
+import Home from "./pages/user/Home";
+
 
 
 const App = () => {
 
-  useEffect(() => {
-    sessionStorage.setItem('email', null)
-  }, [])
+  // useEffect(() => {
+  //   sessionStorage.setItem('email', null)
+  // }, [])
 
   return (
     <Routes>
@@ -31,11 +40,10 @@ const App = () => {
 
       {/* ADMIN NAV */}
       <Route path="admin" element={<AdminNavBar />} >
-        {/* <Route index element={} />
-        <Route path="events" element={} />
-        <Route path="services" element={} />
-        <Route path="records" element={} />
-        <Route path="chat_support" element={} /> */}
+        <Route index element={<Dashboard />} />
+        <Route path="services" element={<Products />} />
+        <Route path="products" element={<Services />} />
+        <Route path="transactions" element={<Transactions />} />
       </Route>
 
       <Route path="*" element={<div>Page not Found!</div>} />
