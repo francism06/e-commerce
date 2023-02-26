@@ -4,20 +4,30 @@ import { useNavigate } from 'react-router-dom';
 import { Outlet, NavLink } from "react-router-dom";
 
 const AdminNavBar = () => {
-    // const navigate = useNavigate();
-    // const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('authenticated'))
+    const [active, setActive] = useState(false);
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const navigate = useNavigate();
 
-    // useEffect(() => {
-    //     document.querySelector('#root').classList.remove('flex', 'flex-col')
-    //     document.querySelector('#root').classList.add('flex', 'flex-row')
-    //     if (authenticated !== 'true') {
-    //         navigate('/');
-    //     }
-    // }, []);
+    const handleLogout = (event) => {
+        localStorage.clear();
+    }
 
-    // const handleLogout = () => {
-    //     sessionStorage.setItem('authenticated', null);
-    // }
+    /**
+     * Checks if the user is admin then redirects to dashboard
+     */
+    useEffect(() => {
+
+        if (user === null) {
+            navigate('/')
+        }
+
+        if (user !== null && Object.keys(user).length !== 0) {
+            const isAdmin = user.is_admin;
+
+            !isAdmin && navigate('/');
+        }
+
+    }, [user]);
 
     return (
         <>
@@ -52,12 +62,12 @@ const AdminNavBar = () => {
                         </NavLink>
                     </li>
 
-                    {/* <li onClick={handleLogout} className="flex flex-row items-center gap-5 cursor-pointer mt-auto">
+                    <li onClick={handleLogout} className="flex flex-row items-center gap-5 cursor-pointer mt-auto">
                         <NavLink to="/" className="flex flex-row gap-5">
                             <Icon icon="clarity:sign-out-line" className='text-2xl' />
                             <p>Sign Out</p>
                         </NavLink>
-                    </li> */}
+                    </li>
 
                 </ul>
             </nav>

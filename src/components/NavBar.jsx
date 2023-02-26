@@ -7,17 +7,21 @@ import { PrimaryButton } from "./Elements";
 
 const NavBar = () => {
   const [active, setActive] = useState(false);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
   const navigate = useNavigate();
 
-  // const [authenticated, setAuthenticated] = useState(sessionStorage.getItem('authenticated'));
-
+  /**
+   * Checks if the user is admin then redirects to dashboard
+   */
   useEffect(() => {
 
-    // if (authenticated === 'true') {
-    //   navigate('./../admin/');
-    // }
+    if (user !== null && Object.keys(user).length !== 0) {
+      const isAdmin = user.is_admin;
 
-  }, []);
+      isAdmin && navigate('/admin');
+    }
+
+  }, [user]);
 
   const handleResize = () => {
     if (window.innerWidth > 1024) {
@@ -55,7 +59,18 @@ const NavBar = () => {
           <NavLink to="/products" className={({ isActive }) => isActive ? 'font-bold' : undefined}>Products</NavLink>
           <NavLink to="/about-us" className={({ isActive }) => isActive ? 'font-bold' : undefined}>About Us</NavLink>
           <NavLink to="/contact-us" className={({ isActive }) => isActive ? 'font-bold' : undefined}>Contact Us</NavLink>
-          <PrimaryButton label={'Login'} location={'/login'} />
+          {
+            (user !== null && Object.keys(user).length !== 0) ? (
+              <div className="flex flex-row justify-center items-center gap-4">
+                <NavLink to={"/cart"}>
+                  <Icon icon="material-symbols:shopping-bag-outline" className="text-2xl" />
+                </NavLink>
+                <NavLink to={"/profile"} className={`font-bold`}>{user.email}</NavLink>
+              </div>
+            ) : (
+              <PrimaryButton label={'Login'} location={'/login'} />
+            )
+          }
         </div>
       </nav>
 

@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 import { PrimaryButton, SecondaryButton, TertiaryButton } from './Elements'
 
-export const ServiceCard = ({ type }) => {
+export const ServiceCard = ({ type = 0 }) => {
     return (
         <div className={`
             ${type ? 'bg-secondary text-white' : 'bg-white text-black'}
