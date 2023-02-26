@@ -6,21 +6,25 @@ import NavBar from './components/NavBar';
 import AdminNavBar from "./components/AdminNavBar";
 
 // Admin Components
-import Dashboard from "./pages/admin/Dashboard";
-import Products from "./pages/admin/Products"
-import Services from "./pages/admin/Services"
-import Transactions from "./pages/admin/Transactions"
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminProducts from "./pages/admin/Products";
+import AdminServices from "./pages/admin/Services";
+import AdminTransactions from "./pages/admin/Transactions";
 
 // User Components
 import Home from "./pages/user/Home";
-
-
+import Products from "./pages/user/Products";
+import Services from "./pages/user/Services";
+import AboutUs from "./pages/user/AboutUs";
+import ContactUs from "./pages/user/ContactUs";
+import Login from "./pages/user/Login";
+import Register from "./pages/user/Register";
 
 const App = () => {
 
   // useEffect(() => {
   //   sessionStorage.setItem('email', null)
-  // }, [])
+  // }, []) 
 
   return (
     <Routes>
@@ -28,22 +32,22 @@ const App = () => {
       {/* USER NAV */}
       <Route path="/" element={<NavBar />}>
         <Route index element={<Home />} />
-        {/* <Route path="services" element={ } />
-        <Route path="products" element={ } />
-        <Route path="about-us" element={ } />
-        <Route path="contact-us" element={ } />
-        <Route path="login" element={ } />
-        <Route path="register" element={ } />
-        <Route path="cart" element={ } />
+        <Route path="services" element={<Services />} />
+        <Route path="products" element={<Products />} />
+        <Route path="about-us" element={<AboutUs />} />
+        <Route path="contact-us" element={<ContactUs />} />
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        {/* <Route path="cart" element={ } />
         <Route path="tracking" element={ } /> */}
       </Route>
 
       {/* ADMIN NAV */}
       <Route path="admin" element={<AdminNavBar />} >
-        <Route index element={<Dashboard />} />
-        <Route path="services" element={<Products />} />
-        <Route path="products" element={<Services />} />
-        <Route path="transactions" element={<Transactions />} />
+        <Route index element={<AdminDashboard />} />
+        <Route path="services" element={<AdminProducts />} />
+        <Route path="products" element={<AdminServices />} />
+        <Route path="transactions" element={<AdminTransactions />} />
       </Route>
 
       <Route path="*" element={<div>Page not Found!</div>} />
