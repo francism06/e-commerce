@@ -1,6 +1,8 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
+import { PrimaryButton, SecondaryButton, TertiaryButton } from './Elements'
+
 export const ServiceCard = ({ type }) => {
     return (
         <div className={`
@@ -13,11 +15,7 @@ export const ServiceCard = ({ type }) => {
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi perferendis modi possimus impedit, fugit ut? Doloremque quo, doloribus voluptatem provident sint aut, vero totam neque, eaque laborum unde nobis harum.</p>
             </div>
             <div>
-                <NavLink to="/services" className={`
-                    ${type ? 'border-white' : 'border-black'}
-                    pb-1 border-b
-                    `}
-                >Read More &rarr;</NavLink>
+                <TertiaryButton label={'Read More'} location={'/services'} CTA={true} />
             </div>
         </div>
     )
@@ -35,8 +33,7 @@ export const ProductCard = () => {
                 <p className='font-bold'>Product Title</p>
                 <div className='w-full h-full flex flex-row items-center justify-between'>
                     <p>Price</p>
-                    <button className="px-8 py-1 bg-white border-2 border-black rounded-lg
-                    transition hover:-translate-x-1 hover:-translate-y-1 hover:drop-shadow-primary active:bg-secondary-active ">Buy Now</button>
+                    <SecondaryButton label={'Buy Now'} location={'/products'} />
                 </div>
             </div>
         </div>

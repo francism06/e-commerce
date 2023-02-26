@@ -3,6 +3,8 @@ import { Icon } from '@iconify/react';
 import { Outlet, NavLink } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
+import { PrimaryButton } from "./Elements";
+
 const NavBar = () => {
   const [active, setActive] = useState(false);
   const navigate = useNavigate();
@@ -53,31 +55,8 @@ const NavBar = () => {
           <NavLink to="/products" className={({ isActive }) => isActive ? 'font-bold' : undefined}>Products</NavLink>
           <NavLink to="/about-us" className={({ isActive }) => isActive ? 'font-bold' : undefined}>About Us</NavLink>
           <NavLink to="/contact-us" className={({ isActive }) => isActive ? 'font-bold' : undefined}>Contact Us</NavLink>
-          <NavLink to="/login" className="px-8 py-1 bg-secondary border-2 border-black text-white font-bold rounded-lg drop-shadow-primary transition hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none active:bg-secondary-active">Login</NavLink>
+          <PrimaryButton label={'Login'} location={'/login'} />
         </div>
-        {/* <ul className={`
-        ${(window.innerWidth < 1024) ? (active ? 'fixed flex flex-col justify-center items-center gap-6 right-0 py-8 bg-white top-24 w-full' : 'hidden') : 'hidden'}
-        lg:flex lg:flex-row lg:justify-end lg:items-center lg:gap-8 lg:mx-12 lg:w-auto lg:h-full
-        `}>
-          <li>
-            <NavLink to="/" className={({ isActive }) => isActive ? 'font-bold' : undefined} >Home</NavLink>
-          </li>
-          <li>
-            <NavLink to="/services" className={({ isActive }) => isActive ? 'font-bold' : undefined}>Services</NavLink>
-          </li>
-          <li>
-            <NavLink to="/products" className={({ isActive }) => isActive ? 'font-bold' : undefined}>Products</NavLink>
-          </li>
-          <li>
-            <NavLink to="/about-us" className={({ isActive }) => isActive ? 'font-bold' : undefined}>About Us</NavLink>
-          </li>
-          <li>
-            <NavLink to="/contact-us" className={({ isActive }) => isActive ? 'font-bold' : undefined}>Contact Us</NavLink>
-          </li>
-          <li>
-            <NavLink to="/login" className="px-8 py-1 bg-secondary border-2 border-black text-white font-bold rounded-lg drop-shadow-primary transition hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none active:bg-secondary-active">Login</NavLink>
-          </li>
-        </ul> */}
       </nav>
 
       <div className="w-full h-full">
