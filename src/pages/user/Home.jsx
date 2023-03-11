@@ -14,7 +14,7 @@ function Home() {
       {/* Hero Section */}
       <div className="flex flex-row w-full p-24">
         <div className="w-2/4 flex flex-col gap-8 justify-center">
-          <h1 className="text-4xl font-bold text-secondary">Because you deserve a beautiful smile.</h1>
+          <h1 className="text-5xl font-bold text-secondary font-paytone">Because you deserve a beautiful smile.</h1>
           <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime magni repudiandae doloribus aut fugiat impedit ad ea placeat commodi eos.</p>
           <PrimaryButton label={'Our Services'} location={'/services'} CTA={true} />
         </div>

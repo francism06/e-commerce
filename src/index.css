@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Paytone+One&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
-    font-family: Verdana, sans-serif;
+@layer base {
+    html {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
 }

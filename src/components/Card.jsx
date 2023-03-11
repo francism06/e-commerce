@@ -31,7 +31,7 @@ export const ProductCard = () => {
             </div>
             <div className='w-full flex flex-col gap-4 p-4'>
                 <p className='font-bold'>Product Title</p>
-                <div className='w-full h-full flex flex-row items-center justify-between'>
+                <div className='w-full h-full flex md:flex-col md:items-start md:gap-2 flex-row items-center justify-between'>
                     <p>Price</p>
                     <SecondaryButton label={'Buy Now'} location={'/products'} />
                 </div>

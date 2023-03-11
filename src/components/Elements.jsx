@@ -26,7 +26,7 @@ export const SecondaryButton = ({ label, location = null, action = null, CTA = f
     return (
         (
             location ?
-                (<NavLink to={location} className={`${CTA && 'flex flex-row items-center gap-2'} w-fit px-8 py-1 bg-white border-2 border-black rounded-lg 
+                (<NavLink to={location} className={`${CTA && 'flex flex-row items-center gap-2'} w-fit md:px-2 px-8 py-1 bg-white border-2 border-black rounded-lg 
                 transition hover:-translate-x-1 hover:-translate-y-1 hover:drop-shadow-primary active:bg-secondary-active`}>{label} {CTA && <Icon icon="ic:outline-arrow-right-alt"/>}</NavLink>)
                 :
                 (<button className={`${CTA && 'flex flex-row items-center gap-2'} w-fit px-8 py-1 bg-white border-2 border-black rounded-lg 
