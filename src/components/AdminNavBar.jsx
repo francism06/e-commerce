@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react';
-import { useNavigate } from 'react-router-dom';
-import { Outlet, NavLink } from "react-router-dom";
+import { useNavigate, Outlet, NavLink } from "react-router-dom";
 
 const AdminNavBar = () => {
     const [active, setActive] = useState(false);
@@ -39,27 +38,33 @@ const AdminNavBar = () => {
 
                 <ul className="flex flex-col flex-1 gap-2">
                     <li className="flex flex-row items-center gap-5 cursor-pointer ">
-                        <NavLink className={({ isActive }) => isActive ? 'flex flex-row gap-5 font-bold text-white w-full px-2 py-4' : 'flex flex-row gap-5 w-full px-2 py-4'} to="/admin" end>
+                        <NavLink className={({ isActive }) => { return (isActive ? 'text-white ' : '') + 'flex flex-row gap-5 w-full px-2 py-4' }} to="/admin" end>
                             <Icon icon="clarity:home-line" className='text-2xl' />
                             <p>Dashboard</p>
                         </NavLink>
                     </li>
                     <li className="flex flex-row items-center gap-5 cursor-pointer ">
-                        <NavLink to="/admin/services" className={({ isActive }) => isActive ? 'flex flex-row gap-5 font-bold text-white w-full px-2 py-4' : 'flex flex-row gap-5 w-full px-2 py-4'}>
+                        <NavLink to="/admin/services" className={({ isActive }) => { return (isActive ? 'text-white ' : '') + 'flex flex-row gap-5 w-full px-2 py-4' }}>
                             <Icon icon="clarity:calendar-line" className='text-2xl' />
                             <p>Services</p>
                         </NavLink>
                     </li>
                     <li className="flex flex-row items-center gap-5 cursor-pointer ">
-                        <NavLink to="/admin/products" className={({ isActive }) => isActive ? 'flex flex-row gap-5 font-bold text-white w-full px-2 py-4' : 'flex flex-row gap-5 w-full px-2 py-4'}>
+                        <NavLink to="/admin/products" className={({ isActive }) => { return (isActive ? 'text-white ' : '') + 'flex flex-row gap-5 w-full px-2 py-4' }}>
                             <Icon icon="clarity:cog-line" className='text-2xl' />
                             <p>Products</p>
                         </NavLink>
                     </li>
                     <li className="flex flex-row items-center gap-5 cursor-pointer ">
-                        <NavLink to="/admin/transactions" className={({ isActive }) => isActive ? 'flex flex-row gap-5 font-bold text-white w-full px-2 py-4' : 'flex flex-row gap-5 w-full px-2 py-4'}>
+                        <NavLink to="/admin/transactions" className={({ isActive }) => { return (isActive ? 'text-white ' : '') + 'flex flex-row gap-5 w-full px-2 py-4' }}>
                             <Icon icon="clarity:clipboard-line" className='text-2xl' />
                             <p>Transactions</p>
+                        </NavLink>
+                    </li>
+                    <li className="flex flex-row items-center gap-5 cursor-pointer ">
+                        <NavLink to="/admin/manage-users" className={({ isActive }) => { return (isActive ? 'text-white ' : '') + 'flex flex-row gap-5 w-full px-2 py-4' }}>
+                            <Icon icon="clarity:user-solid" className='text-2xl' />
+                            <p>Manage Users</p>
                         </NavLink>
                     </li>
 
@@ -73,7 +78,7 @@ const AdminNavBar = () => {
                 </ul>
             </nav>
 
-            <div className="w-full h-full pl-[318px]">
+            <div className="w-full h-full pl-[318px] bg-gray-100">
                 <Outlet />
             </div>
 

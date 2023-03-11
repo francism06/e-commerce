@@ -8,6 +8,7 @@ import AdminNavBar from "./components/AdminNavBar";
 // Admin Components
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
+import AdminManageProducts from "./pages/admin/ManageProducts";
 import AdminServices from "./pages/admin/Services";
 import AdminTransactions from "./pages/admin/Transactions";
 
@@ -21,26 +22,21 @@ import ContactUs from "./pages/user/ContactUs";
 import Profile from "./pages/user/Profile";
 import Cart from "./pages/user/Cart";
 import Tracking from "./pages/user/Tracking";
+import ManageUsers from "./pages/admin/ManageUsers";
 
 import Login from "./pages/user/Login";
 import Register from "./pages/user/Register";
 
 const App = () => {
-  // const navigate = useNavigate();
-
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-
-    if (user !== null && Object.keys(user).length !== 0) {
-      console.log(user);
-    }
-
-  }, []);
-
   // useEffect(() => {
-  //   localStorage.clear();
+  //   const user = JSON.parse(localStorage.getItem('user'));
+
+  //   if (user !== null && Object.keys(user).length !== 0) {
+  //     console.log(user);
+  //   }
+
   // }, []);
-  
+
   return (
     <Routes>
 
@@ -63,7 +59,10 @@ const App = () => {
         <Route index element={<AdminDashboard />} />
         <Route path="services" element={<AdminServices />} />
         <Route path="products" element={<AdminProducts />} />
+        <Route path="products/create" element={<AdminManageProducts />} />
+        <Route path="products/edit/:id" element={<AdminManageProducts />} />
         <Route path="transactions" element={<AdminTransactions />} />
+        <Route path="manage-users" element={<ManageUsers />} />
       </Route>
 
       <Route path="*" element={<div>Page not Found!</div>} />

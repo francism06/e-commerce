@@ -9,10 +9,22 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 
+/**
+ * Service Details
+ * 
+ * name
+ * description
+ * image
+ * price_start
+ * price_end - nullable
+ * tags
+ * note
+ */
+
 const Services = () => {
   return (
     <div>Services</div>
   )
 }
 
-export default Services
+export default Services;
