@@ -26,14 +26,12 @@ import Login from "./pages/user/Login";
 import Register from "./pages/user/Register";
 
 const App = () => {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   // const navigate = useNavigate();
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('user'));
 
     if (user !== null && Object.keys(user).length !== 0) {
-      // setIsLoggedIn(true);
       console.log(user);
     }
 
