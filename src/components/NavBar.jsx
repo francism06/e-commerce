@@ -34,14 +34,14 @@ const NavBar = () => {
   });
 
   return (
-    <div className="flex flex-col">
-      <nav className='sticky top-0 h-28 w-full flex flex-row justify-between items-center bg-white z-20 py-4'>
-        <a href="/" className='flex flex-row justify-center items-center mx-12 w-fit'>
+    <div className="flex flex-col justify-center items-center">
+      <nav className='sticky top-4 h-22 md:w-[95%] w-3/4 flex flex-row justify-between items-center bg-white z-20 py-4 border-2 border-black drop-shadow-primary rounded-lg'>
+        <a href="/" className='flex flex-row justify-center items-center mx-6 lg:mx-12 w-fit'>
           <img className='w-auto h-14' src="Logo.png" alt="Sicat Dental Clinic Logo" />
-          <p className='font-bold text-xl px-2 w-fit text-secondary'>Sicat Dental Clinic</p>
+          <p className='font-bold sm:text-sm text-base lg:text-xl px-2 w-fit text-secondary'>Sicat Dental Clinic</p>
         </a>
         <button
-          className="flex flex-row justify-end items-center gap-8 p-2 mx-20 w-auto text-3xl lg:hidden"
+          className="flex flex-row justify-end items-center gap-8 p-2 mx-6 lg:mx-20 w-auto text-3xl lg:hidden"
           title="Navbar"
           type="button"
           onClick={() => {
@@ -51,7 +51,7 @@ const NavBar = () => {
           <Icon icon="clarity:bars-line" />
         </button>
         <div className={`
-        ${(window.innerWidth < 1024) ? (active ? 'fixed flex flex-col justify-center items-center gap-6 right-0 py-8 bg-white top-24 w-full' : 'hidden') : 'hidden'}
+        ${(window.innerWidth < 1024) ? (active ? 'fixed flex flex-col justify-center items-center gap-6 right-0 py-8 bg-white top-24 w-full border-2 border-black rounded-lg' : 'hidden') : 'hidden'}
         lg:flex lg:flex-row lg:justify-end lg:items-center lg:gap-8 lg:mx-12 lg:w-auto lg:h-full
         `}>
           <NavLink to="/" className={({ isActive }) => isActive ? 'font-bold' : undefined} >Home</NavLink>
@@ -74,7 +74,7 @@ const NavBar = () => {
         </div>
       </nav>
 
-      <div className="w-full h-full">
+      <div className="w-full pt-8 min-h-[90vh]">
         <Outlet />
       </div>
 

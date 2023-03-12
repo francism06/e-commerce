@@ -8,7 +8,8 @@ import AdminNavBar from "./components/AdminNavBar";
 // Admin Components
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
-import AdminManageProducts from "./pages/admin/ManageProducts";
+import AdminCreateProduct from "./pages/admin/CreateProduct";
+import AdminEditProduct from "./pages/admin/EditProduct";
 import AdminServices from "./pages/admin/Services";
 import AdminTransactions from "./pages/admin/Transactions";
 
@@ -59,8 +60,8 @@ const App = () => {
         <Route index element={<AdminDashboard />} />
         <Route path="services" element={<AdminServices />} />
         <Route path="products" element={<AdminProducts />} />
-        <Route path="products/create" element={<AdminManageProducts />} />
-        <Route path="products/edit/:id" element={<AdminManageProducts />} />
+        <Route path="products/create" element={<AdminCreateProduct />} />
+        <Route path="products/edit/:id" element={<AdminEditProduct />} />
         <Route path="transactions" element={<AdminTransactions />} />
         <Route path="manage-users" element={<ManageUsers />} />
       </Route>

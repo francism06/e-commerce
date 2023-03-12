@@ -78,7 +78,7 @@ const AdminNavBar = () => {
                 </ul>
             </nav>
 
-            <div className="w-full h-full pl-[318px] bg-gray-100">
+            <div className="w-full min-h-screen pl-[318px] bg-gray-100">
                 <Outlet />
             </div>
 

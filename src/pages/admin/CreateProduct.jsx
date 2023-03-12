@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { db, storage } from "../../config/firebase";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     collection,
-    getDoc,
     addDoc,
     updateDoc,
     doc,
-    deleteDoc,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
@@ -19,35 +17,36 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
  * image
  * category
  * price
+ * quantity
  */
 
-const DisplayImage = ({ image, index, handleRemoveImage }) => {
-    return (
-        <button onClick={() => handleRemoveImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500 rounded-md cursor-pointer" key={index}>
-            <div className="opacity-0 hover:opacity-100 flex justify-center items-center absolute w-full h-full bg-slate-800/30 transition-all">
-                <p className="w-fit p-2 bg-red-600 text-white z-[1] rounded-md">Remove</p>
-            </div>
-            <img src={image.display} className="object-contain w-full h-72" />
-        </button>
-    )
-};
+// const DisplayImage = ({ image, index, handleRemoveImage }) => {
+//     return (
+//         <button onClick={() => handleRemoveImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500 rounded-md cursor-pointer" key={index}>
+//             <div className="opacity-0 hover:opacity-100 flex justify-center items-center absolute w-full h-full bg-slate-800/30 transition-all">
+//                 <p className="w-fit p-2 bg-red-600 text-white z-[1] rounded-md">Remove</p>
+//             </div>
+//             <img src={image.display} className="object-contain w-full h-72" />
+//         </button>
+//     )
+// };
 
-const ManageProducts = () => {
+const CreateProduct = () => {
     const details = {
         'name': '',
         'description': '',
         'images': [],
         'price': 0,
+        'quantity': 0,
     };
 
     const [productDetails, setProductDetails] = useState(details);
     const [imagesSelected, setImagesSelected] = useState([]);
-    const { id } = useParams();
     const navigate = useNavigate();
 
     const handleSubmit = async () => {
         // Uploads to collection
-        const docRef = await addDoc(collection(db, 'products'), productDetails).then((docRef) => docRef.id);
+        const docRef = await addDoc(collection(db, 'products'), { ...productDetails, 'date_created': Date.now() }).then((docRef) => docRef.id);
         const imageList = new Array();
 
         // Uploads images to storage
@@ -102,30 +101,7 @@ const ManageProducts = () => {
         setImagesSelected((prevState) => {
             return prevState.filter((_, key) => key !== index)
         });
-
-        if (id && productDetails.images.length) {
-            setProductDetails((prevState) => {
-                const newImages = prevState.images.filter((_, key) => key !== index);
-                return {
-                    ...prevState,
-                    'images': newImages
-                }
-            });
-        }
     };
-
-    useEffect(() => {
-        if (id) {
-            const getProducts = async () => {
-                const docRef = doc(db, 'products', id);
-                const docSnap = await getDoc(docRef);
-
-                setProductDetails(docSnap.data());
-            };
-
-            getProducts();
-        }
-    }, []);
 
     return (
         <div className="w-full h-full flex flex-col gap-4 p-4">
@@ -149,29 +125,16 @@ const ManageProducts = () => {
                     <p>Image</p>
                     <div className="grid grid-cols-3 gap-4 w-full">
                         {
-                            productDetails.images.length ? (
-                                productDetails.images.map((image, index) => {
-                                    return (
-                                        <button onClick={() => handleRemoveImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500 rounded-md cursor-pointer" key={index}>
-                                            <div className="opacity-0 hover:opacity-100 flex justify-center items-center absolute w-full h-full bg-slate-800/30 transition-all">
-                                                <p className="w-fit p-2 bg-red-600 text-white z-[1] rounded-md">Remove</p>
-                                            </div>
-                                            <img src={image.url} className="object-contain w-full h-72" />
-                                        </button>
-                                    )
-                                })
-                            ) : (
-                                imagesSelected.map((image, index) => {
-                                    return (
-                                        <button onClick={() => handleRemoveImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500 rounded-md cursor-pointer" key={index}>
-                                            <div className="opacity-0 hover:opacity-100 flex justify-center items-center absolute w-full h-full bg-slate-800/30 transition-all">
-                                                <p className="w-fit p-2 bg-red-600 text-white z-[1] rounded-md">Remove</p>
-                                            </div>
-                                            <img src={image.display} className="object-contain w-full h-72" />
-                                        </button>
-                                    )
-                                })
-                            )
+                            imagesSelected.map((image, index) => {
+                                return (
+                                    <button onClick={() => handleRemoveImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500 rounded-md cursor-pointer" key={index}>
+                                        <div className="opacity-0 hover:opacity-100 flex justify-center items-center absolute w-full h-full bg-slate-800/30 transition-all">
+                                            <p className="w-fit p-2 bg-red-600 text-white z-[1] rounded-md">Remove</p>
+                                        </div>
+                                        <img src={image.display} className="object-contain w-full h-72" />
+                                    </button>
+                                )
+                            })
                         }
                         <label htmlFor="image" className="flex justify-center items-center w-full h-72 cursor-pointer border border-gray-500 rounded-md">Upload Image</label>
                     </div>
@@ -181,9 +144,13 @@ const ManageProducts = () => {
                     <p>Price</p>
                     <input onChange={handleChange} placeholder="Enter price here..." value={productDetails.price} className="border-2 border-black px-2 py-1" type="text" name="price" id="price" />
                 </div>
+                <div className="flex flex-col">
+                    <p>Quantity</p>
+                    <input onChange={handleChange} placeholder="Enter quantity here..." value={productDetails.quantity} className="border-2 border-black px-2 py-1" type="text" name="quantity" id="quantity" />
+                </div>
             </div>
         </div>
     )
 };
 
-export default ManageProducts;
+export default CreateProduct;

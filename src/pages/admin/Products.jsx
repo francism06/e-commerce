@@ -4,10 +4,8 @@ import { db } from "../../config/firebase";
 import {
   collection,
   getDocs,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
+  query,
+  orderBy
 } from "firebase/firestore";
 
 import { PrimaryButton, SecondaryButton } from "../../components/Elements";
@@ -27,7 +25,7 @@ const Products = () => {
   useEffect(() => {
     const getProducts = async () => {
       const queryRef = collection(db, 'products');
-      const querySnap = await getDocs(queryRef);
+      const querySnap = await getDocs(query(queryRef, orderBy('date_created', 'desc')));
 
       const product = new Array();
       querySnap.forEach((doc) => product.push({ id: doc.id, ...doc.data() }));
@@ -51,6 +49,7 @@ const Products = () => {
             <tr className="bg-secondary drop-shadow-primary">
               <th className="p-4 w-52 text-white rounded-l-lg border-l-2 border-y-2 border-black">Image</th>
               <th className="p-4 flex-1 text-white text-left border-y-2 border-black">Name</th>
+              <th className="p-4 w-32 text-white border-y-2 border-black">Quantity</th>
               <th className="p-4 w-32 text-white border-y-2 border-black">Price</th>
               <th className="p-4 w-32 text-white rounded-r-lg border-r-2 border-y-2 border-black">Action</th>
             </tr>
@@ -63,7 +62,13 @@ const Products = () => {
                     <tr key={index} className="bg-white border-2 drop-shadow-primary">
                       <td className="p-4 text-center rounded-l-lg border-l-2 border-y-2 border-black">
                         <div className="flex justify-center items-center w-full h-full">
-                          <img className="h-24 object-fit" src={product.images[0].url} />
+                          {
+                            product.images.length ? (
+                              <img className="h-24 object-fit" src={product.images[0].url} />
+                            ) : (
+                              <p>No image!</p>
+                            )
+                          }
                         </div>
                       </td>
                       <td className="p-4 border-y-2 border-black">
@@ -72,6 +77,7 @@ const Products = () => {
                           <p className="text-slate-600">{product.description}</p>
                         </div>
                       </td>
+                      <td className="p-4 text-center border-y-2 border-black"><p>{product.quantity}</p></td>
                       <td className="p-4 text-center border-y-2 border-black"><p>{product.price}</p></td>
                       <td className="p-4 text-center rounded-r-lg border-r-2 border-y-2 border-black">
                         <div className="flex w-full h-full justify-center items-center">
