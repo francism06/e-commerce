@@ -128,18 +128,18 @@ const EditProduct = () => {
             <div className="flex flex-row justify-between items-center">
                 <p className="font-bold text-secondary">Products</p>
                 <div className="flex flex-row gap-2">
-                    <Link to={'../products'} className="px-4 py-2 flex justify-center items-center border-2 border-secondary text-secondary rounded-md">Cancel</Link>
-                    <button onClick={handleSubmit} type="button" className="px-4 py-2 flex justify-center items-center bg-secondary text-white rounded-md">Save</button>
+                    <Link to={'../products'} className="px-4 py-2 flex justify-center items-center border-4 border-secondary text-secondary ">Cancel</Link>
+                    <button onClick={handleSubmit} type="button" className="px-4 py-2 flex justify-center items-center bg-secondary text-white ">Save</button>
                 </div>
             </div>
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
                     <p>Name</p>
-                    <input onChange={handleChange} value={productDetails.name} placeholder="Enter product name here..." className="border-2 border-black px-2 py-1" type="text" name="name" id="name" />
+                    <input onChange={handleChange} value={productDetails.name} placeholder="Enter product name here..." className="border-4 border-black px-2 py-1" type="text" name="name" id="name" />
                 </div>
                 <div className="flex flex-col">
                     <p>Description</p>
-                    <textarea onChange={handleChange} value={productDetails.description} placeholder="Enter description here..." className="border-2 border-black px-2 py-1 resize-none" name="description" id="description" cols="30" rows="10"></textarea>
+                    <textarea onChange={handleChange} value={productDetails.description} placeholder="Enter description here..." className="border-4 border-black px-2 py-1 resize-none" name="description" id="description" cols="30" rows="10"></textarea>
                 </div>
                 <div className="flex flex-col">
                     <p>Image</p>
@@ -148,9 +148,9 @@ const EditProduct = () => {
                             productDetails.images.length ? (
                                 productDetails.images.map((image, index) => {
                                     return (
-                                        <button onClick={() => handleRemoveUploadedImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500 rounded-md cursor-pointer" key={index}>
+                                        <button onClick={() => handleRemoveUploadedImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500  cursor-pointer" key={index}>
                                             <div className="opacity-0 hover:opacity-100 flex justify-center items-center absolute w-full h-full bg-slate-800/30 transition-all">
-                                                <p className="w-fit p-2 bg-red-600 text-white z-[1] rounded-md">Remove</p>
+                                                <p className="w-fit p-2 bg-red-600 text-white z-[1] ">Remove</p>
                                             </div>
                                             <img src={image.url} className="object-contain w-full h-72" />
                                         </button>
@@ -162,9 +162,9 @@ const EditProduct = () => {
                             imagesSelected.length ? (
                                 imagesSelected.map((image, index) => {
                                     return (
-                                        <button onClick={() => handleRemoveImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500 rounded-md cursor-pointer" key={index}>
+                                        <button onClick={() => handleRemoveImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500  cursor-pointer" key={index}>
                                             <div className="opacity-0 hover:opacity-100 flex justify-center items-center absolute w-full h-full bg-slate-800/30 transition-all">
-                                                <p className="w-fit p-2 bg-red-600 text-white z-[1] rounded-md">Remove</p>
+                                                <p className="w-fit p-2 bg-red-600 text-white z-[1] ">Remove</p>
                                             </div>
                                             <img src={image.display} className="object-contain w-full h-72" />
                                         </button>
@@ -172,17 +172,17 @@ const EditProduct = () => {
                                 })
                             ) : null
                         }
-                        <label htmlFor="image" className="flex justify-center items-center w-full h-72 cursor-pointer border border-gray-500 rounded-md">Upload Image</label>
+                        <label htmlFor="image" className="flex justify-center items-center w-full h-72 cursor-pointer border border-gray-500 ">Upload Image</label>
                     </div>
-                    <input hidden={true} onChange={handleUploadImage} accept="image/" className="border-2 border-black px-2 py-1" type="file" name="image" id="image" />
+                    <input hidden={true} onChange={handleUploadImage} accept="image/" className="border-4 border-black px-2 py-1" type="file" name="image" id="image" />
                 </div>
                 <div className="flex flex-col">
                     <p>Price</p>
-                    <input onChange={handleChange} placeholder="Enter price here..." value={productDetails.price} className="border-2 border-black px-2 py-1" type="text" name="price" id="price" />
+                    <input onChange={handleChange} placeholder="Enter price here..." value={productDetails.price} className="border-4 border-black px-2 py-1" type="text" name="price" id="price" />
                 </div>
                 <div className="flex flex-col">
                     <p>Quantity</p>
-                    <input onChange={handleChange} placeholder="Enter quantity here..." value={productDetails.quantity} className="border-2 border-black px-2 py-1" type="text" name="quantity" id="quantity" />
+                    <input onChange={handleChange} placeholder="Enter quantity here..." value={productDetails.quantity} className="border-4 border-black px-2 py-1" type="text" name="quantity" id="quantity" />
                 </div>
             </div>
         </div>

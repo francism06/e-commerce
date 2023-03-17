@@ -41,7 +41,7 @@ const Products = () => {
       <div className="flex flex-row w-full justify-between items-center">
         <p className="font-bold text-secondary">Products</p>
         <PrimaryButton label={'Create Product'} location={'create'} />
-        {/* <Link to={'create'} className="px-4 py-2 bg-secondary text-white rounded-md">Create Product</Link> */}
+        {/* <Link to={'create'} className="px-4 py-2 bg-secondary text-white ">Create Product</Link> */}
       </div>
       <div className="flex flex-col w-full h-full">
         <table className="w-full table-fixed border-separate border-spacing-y-6">
@@ -59,7 +59,7 @@ const Products = () => {
               productList.length ? (
                 productList.map((product, index) => {
                   return (
-                    <tr key={index} className="bg-white border-2 drop-shadow-primary">
+                    <tr key={index} className="bg-white border-4 drop-shadow-primary">
                       <td className="p-4 text-center rounded-l-lg border-l-2 border-y-2 border-black">
                         <div className="flex justify-center items-center w-full h-full">
                           {

@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 export const Header = ({ title }) => {
     return (
-        <h1 className="font-bold text-2xl p-4 bg-tertiary border-2 border-black drop-shadow-primary">{title}</h1>
+        <h1 className="font-bold text-2xl p-4 bg-tertiary border-4 border-black drop-shadow-primary">{title}</h1>
     )
 };
 
@@ -13,10 +13,10 @@ export const PrimaryButton = ({ label, location = null, action = null, CTA = fal
     return (
         (
             location ?
-                (<NavLink to={location} className={`${CTA && 'flex flex-row items-center gap-2'} w-fit px-8 py-1 bg-secondary border-2 border-black text-white font-bold rounded-lg drop-shadow-primary 
+                (<NavLink to={location} className={`${CTA && 'flex flex-row items-center gap-2'} w-fit px-8 py-1 bg-secondary border-4 border-black text-white font-bold  drop-shadow-primary 
                 transition hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none active:bg-secondary-active`}>{label} {CTA && <Icon icon="ic:outline-arrow-right-alt"/>}</NavLink>)
                 :
-                (<button className={`${CTA && 'flex flex-row items-center gap-2'} w-fit px-8 py-1 bg-secondary border-2 border-black text-white font-bold rounded-lg drop-shadow-primary 
+                (<button className={`${CTA && 'flex flex-row items-center gap-2'} w-fit px-8 py-1 bg-secondary border-4 border-black text-white font-bold  drop-shadow-primary 
                 transition hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none active:bg-secondary-active`}>{label} {CTA && <Icon icon="ic:outline-arrow-right-alt"/>}</button>)
         )
     )
@@ -26,10 +26,10 @@ export const SecondaryButton = ({ label, location = null, action = null, CTA = f
     return (
         (
             location ?
-                (<NavLink to={location} className={`${CTA && 'flex flex-row items-center gap-2'} w-fit md:px-2 px-8 py-1 bg-white border-2 border-black rounded-lg 
+                (<NavLink to={location} className={`${CTA && 'flex flex-row items-center gap-2'} w-fit md:px-2 px-8 py-1 bg-white border-4 border-black  
                 transition hover:-translate-x-1 hover:-translate-y-1 hover:drop-shadow-primary active:bg-secondary-active`}>{label} {CTA && <Icon icon="ic:outline-arrow-right-alt"/>}</NavLink>)
                 :
-                (<button className={`${CTA && 'flex flex-row items-center gap-2'} w-fit px-8 py-1 bg-white border-2 border-black rounded-lg 
+                (<button className={`${CTA && 'flex flex-row items-center gap-2'} w-fit px-8 py-1 bg-white border-4 border-black  
                 transition hover:-translate-x-1 hover:-translate-y-1 hover:drop-shadow-primary active:bg-secondary-active`}>{label} {CTA && <Icon icon="ic:outline-arrow-right-alt"/>}</button>)
         )
     )

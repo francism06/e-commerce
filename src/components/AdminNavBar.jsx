@@ -4,12 +4,14 @@ import { useNavigate, Outlet, NavLink } from "react-router-dom";
 
 const AdminNavBar = () => {
     const [active, setActive] = useState(false);
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const user = JSON.parse(localStorage.getItem('user'));
     const navigate = useNavigate();
 
-    const handleLogout = (event) => {
+    const handleLogout = () => {
         localStorage.clear();
-    }
+
+        navigate('/');
+    };
 
     /**
      * Checks if the user is admin then redirects to dashboard
@@ -26,12 +28,12 @@ const AdminNavBar = () => {
             !isAdmin && navigate('/');
         }
 
-    }, [user]);
+    }, []);
 
     return (
         <>
             <nav className="fixed bg-secondary left-0 top-0 flex flex-col min-h-[100vh] min-w-[318px] max-w-[318px] py-5 px-7 gap-8 bg-sadp-brown">
-                <a href="/admin" className='flex flex-row justify-center items-center bg-white rounded-lg py-1 px-5 gap-4'>
+                <a href="/admin" className='flex flex-row justify-center items-center bg-white  py-1 px-5 gap-4'>
                     <img className='w-auto h-10' src="/Logo.png" alt="Sicat Dental Clinic Logo" />
                     <p className='font-bold text-base px-2 text-sadp-brown'>Sicat Dental Clinic</p>
                 </a>

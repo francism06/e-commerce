@@ -16,6 +16,7 @@ import AdminTransactions from "./pages/admin/Transactions";
 // User Components
 import Home from "./pages/user/Home";
 import Products from "./pages/user/Products";
+import ViewProduct from "./pages/user/ViewProduct";
 import Services from "./pages/user/Services";
 import AboutUs from "./pages/user/AboutUs";
 import ContactUs from "./pages/user/ContactUs";
@@ -46,6 +47,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="services" element={<Services />} />
         <Route path="products" element={<Products />} />
+        <Route path="products/:id" element={<ViewProduct />} />
         <Route path="about-us" element={<AboutUs />} />
         <Route path="contact-us" element={<ContactUs />} />
         <Route path="login" element={<Login />} />

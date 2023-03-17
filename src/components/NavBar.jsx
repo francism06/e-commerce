@@ -35,9 +35,9 @@ const NavBar = () => {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <nav className='sticky top-4 h-22 md:w-[95%] w-3/4 flex flex-row justify-between items-center bg-white z-20 py-4 border-2 border-black drop-shadow-primary rounded-lg'>
+      <nav className='sticky top-4 h-22 md:w-[95%] w-3/4 flex flex-row justify-between items-center bg-white z-20 py-4 border-4 border-black drop-shadow-primary '>
         <a href="/" className='flex flex-row justify-center items-center mx-6 lg:mx-12 w-fit'>
-          <img className='w-auto h-14' src="Logo.png" alt="Sicat Dental Clinic Logo" />
+          <img className='w-auto h-14' src="/Logo.png" alt="Sicat Dental Clinic Logo" />
           <p className='font-bold sm:text-sm text-base lg:text-xl px-2 w-fit text-secondary'>Sicat Dental Clinic</p>
         </a>
         <button
@@ -51,7 +51,7 @@ const NavBar = () => {
           <Icon icon="clarity:bars-line" />
         </button>
         <div className={`
-        ${(window.innerWidth < 1024) ? (active ? 'fixed flex flex-col justify-center items-center gap-6 right-0 py-8 bg-white top-24 w-full border-2 border-black rounded-lg' : 'hidden') : 'hidden'}
+        ${(window.innerWidth < 1024) ? (active ? 'fixed flex flex-col justify-center items-center gap-6 right-0 py-8 bg-white top-24 w-full border-4 border-black ' : 'hidden') : 'hidden'}
         lg:flex lg:flex-row lg:justify-end lg:items-center lg:gap-8 lg:mx-12 lg:w-auto lg:h-full
         `}>
           <NavLink to="/" className={({ isActive }) => isActive ? 'font-bold' : undefined} >Home</NavLink>
@@ -74,7 +74,7 @@ const NavBar = () => {
         </div>
       </nav>
 
-      <div className="w-full pt-8 min-h-[90vh]">
+      <div className="w-full pt-12 min-h-screen">
         <Outlet />
       </div>
 

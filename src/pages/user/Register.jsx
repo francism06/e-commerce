@@ -85,7 +85,7 @@ const Register = () => {
 
     return (
         <div className="w-full h-[80vh] flex justify-center items-center">
-            <div className="w-3/5 py-12 flex justify-center items-center bg-white border-2 border-black drop-shadow-primary rounded-lg">
+            <div className="w-3/5 py-12 flex justify-center items-center bg-white border-4 border-black drop-shadow-primary ">
                 <form onSubmit={handleSubmit} className="w-3/4 flex flex-col justify-center items-center gap-8">
                     <div className="flex w-full">
                         <p className="text-2xl font-bold">Sign Up</p>
@@ -94,34 +94,34 @@ const Register = () => {
                         <div className="flex flex-row gap-4 w-full">
                             <div className="w-2/4">
                                 <label htmlFor="first_name">First Name</label>
-                                <input onInput={(event) => setFirstName(event.target.value)} className="w-full p-2 border-2 border-black rounded-lg outline-none focus:drop-shadow-tertiary" type="text" name="first_name" id="first_name" />
+                                <input onInput={(event) => setFirstName(event.target.value)} className="w-full p-2 border-4 border-black  outline-none focus:drop-shadow-tertiary" type="text" name="first_name" id="first_name" />
                             </div>
                             <div className="w-2/4">
                                 <label htmlFor="last_name">Last Name</label>
-                                <input onInput={(event) => setLastName(event.target.value)} className="w-full p-2 border-2 border-black rounded-lg outline-none focus:drop-shadow-tertiary" type="text" name="last_name" id="last_name" />
+                                <input onInput={(event) => setLastName(event.target.value)} className="w-full p-2 border-4 border-black  outline-none focus:drop-shadow-tertiary" type="text" name="last_name" id="last_name" />
                             </div>
                         </div>
                         <div className="flex flex-row gap-4 w-full">
                             <div className="w-3/4">
                                 <label htmlFor="email_address">Email Address</label>
-                                <input onInput={(event) => setEmail(event.target.value)} className="w-full p-2 border-2 border-black rounded-lg outline-none focus:drop-shadow-tertiary" type="email" name="email_address" id="email_address" />
+                                <input onInput={(event) => setEmail(event.target.value)} className="w-full p-2 border-4 border-black  outline-none focus:drop-shadow-tertiary" type="email" name="email_address" id="email_address" />
                             </div>
                             <div className="w-1/4">
                                 <label htmlFor="contact_number">Contact Number</label>
-                                <input onInput={(event) => setContactNumber(event.target.value)} className="w-full p-2 border-2 border-black rounded-lg outline-none focus:drop-shadow-tertiary" type="text" name="contact_number" id="contact_number" />
+                                <input onInput={(event) => setContactNumber(event.target.value)} className="w-full p-2 border-4 border-black  outline-none focus:drop-shadow-tertiary" type="text" name="contact_number" id="contact_number" />
                             </div>
                         </div>
                         <div className="flex flex-col w-full">
                             <label htmlFor="address">Address</label>
-                            <textarea onInput={(event) => setAddress(event.target.value)} className="p-2 border-2 border-black rounded-lg outline-none focus:drop-shadow-tertiary resize-none" name="address" id="address" cols="30" rows="3"></textarea>
+                            <textarea onInput={(event) => setAddress(event.target.value)} className="p-2 border-4 border-black  outline-none focus:drop-shadow-tertiary resize-none" name="address" id="address" cols="30" rows="3"></textarea>
                         </div>
                         <div className="flex flex-col w-full">
                             <label htmlFor="password">Password</label>
-                            <input onInput={(event) => setPassword(event.target.value)} className="p-2 border-2 border-black rounded-lg outline-none focus:drop-shadow-tertiary" type="password" name="password" id="password" autoComplete="off" />
+                            <input onInput={(event) => setPassword(event.target.value)} className="p-2 border-4 border-black  outline-none focus:drop-shadow-tertiary" type="password" name="password" id="password" autoComplete="off" />
                         </div>
                         <div className="flex flex-col w-full">
                             <label htmlFor="confirm_password">Confirm Password</label>
-                            <input onInput={(event) => setConfirmPassword(event.target.value)} className="p-2 border-2 border-black rounded-lg outline-none focus:drop-shadow-tertiary" type="password" name="confirm_password" id="confirm_password" autoComplete="off" />
+                            <input onInput={(event) => setConfirmPassword(event.target.value)} className="p-2 border-4 border-black  outline-none focus:drop-shadow-tertiary" type="password" name="confirm_password" id="confirm_password" autoComplete="off" />
                         </div>
                     </div>
                     <div className="flex flex-col justify-center items-center gap-4">

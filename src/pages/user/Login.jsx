@@ -61,7 +61,7 @@ const Login = () => {
 
     return (
         <div className="w-full h-[80vh] flex justify-center items-center">
-            <div className="w-3/5 h-4/5 flex flex-row bg-white border-2 border-black drop-shadow-primary rounded-lg">
+            <div className="w-3/5 h-4/5 flex flex-row bg-white border-4 border-black drop-shadow-primary ">
                 <div className="w-2/4 h-full border-r-2 border-black flex justify-center items-center">
                     <img src="Logo.png" alt="Sicat Dental Clinic Logo" />
                 </div>
@@ -73,11 +73,11 @@ const Login = () => {
                         <div className="flex flex-col w-full gap-4">
                             <div className="flex flex-col w-full">
                                 <label htmlFor="email_address">Email</label>
-                                <input onInput={(event) => setEmail(event.target.value)} className="p-2 border-2 border-black rounded-lg outline-none focus:drop-shadow-tertiary" type="text" name="email_address" id="email_address" autoComplete="email" />
+                                <input onInput={(event) => setEmail(event.target.value)} className="p-2 border-4 border-black  outline-none focus:drop-shadow-tertiary" type="text" name="email_address" id="email_address" autoComplete="email" />
                             </div>
                             <div className="flex flex-col w-full">
                                 <label htmlFor="password">Password</label>
-                                <input onInput={(event) => setPassword(event.target.value)} className="p-2 border-2 border-black rounded-lg outline-none focus:drop-shadow-tertiary" type="password" name="password" id="password" autoComplete="current-password" />
+                                <input onInput={(event) => setPassword(event.target.value)} className="p-2 border-4 border-black  outline-none focus:drop-shadow-tertiary" type="password" name="password" id="password" autoComplete="current-password" />
                             </div>
                         </div>
                         <div className="flex flex-col justify-center items-center gap-4">
