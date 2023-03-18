@@ -3,11 +3,7 @@ import { useNavigate, Link, useParams } from "react-router-dom";
 import { db } from "../config/firebase";
 import {
     doc,
-    getDoc,
-    getDocs,
     updateDoc,
-    collection,
-    setDoc
 } from "firebase/firestore";
 import { Icon } from "@iconify/react";
 
@@ -52,16 +48,6 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
         setIsSelected((prevState) => !prevState);
     };
 
-    // const checkIfSelected = () => {
-    //     const isSelected = selectedItems.findIndex((item) => item === productDetails.product_id);
-
-    //     if (isSelected !== -1) {
-    //         return true;
-    //     }
-
-    //     return false;
-    // }
-
     useEffect(() => {
         setProductDetails(item);
     }, [item]);
@@ -105,37 +91,6 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
                 updateQuantity();
             }
         }
-
-
-        // if (quantity !== productDetails.quantity) {
-        //     const updateQuantity = async () => {
-        //         console.log(quantity, productDetails.quantity, productDetails.product_id);
-        //     };
-
-        //     updateQuantity();
-        // }
-
-
-
-        // if (quantity !== productDetails.quantity) {
-        //     const updateQuantity = async () => {
-        //         const itemRef = doc(db, 'users', uid);
-        //         await updateDoc(doc(itemRef, 'items', productDetails.product_id), {
-        //             quantity: quantity,
-        //             total_price: quantity * parseInt(productDetails.price)
-        //         });
-
-        //         setProductDetails((prevState) => {
-        //             return {
-        //                 ...prevState,
-        //                 quantity: quantity,
-        //                 total_price: quantity * parseInt(productDetails.price)
-        //             };
-        //         })
-        //     };
-
-        //     updateQuantity();
-        // }
     }, [quantity]);
 
     useEffect(() => {
@@ -147,37 +102,20 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
                 return;
             }
         }
+
+        setIsSelected(false);
     }, [selectedItems]);
 
-    // useEffect(() => {
-    //     if (Object.keys(productDetails).length && !isMounted.current) {
-    //         isMounted.current = true;
-    //         return;
-    //     }
+    useEffect(() => {
+        if (!isMounted.current) {
+            return;
+        }
 
-    //     console.log(productDetails);
-
-    //     // if (isMounted.current) {
-    //     //     handleUpdateQuantity(index, productDetails);
-    //     //     return;
-    //     // }
-
-    //     // if (!isMounted.current && Object.keys(productDetails).length) {
-    //     //     const getProductDetails = async () => {
-    //     //         const docRef = doc(db, 'products', item.product_id);
-    //     //         const docSnap = await getDoc(docRef);
-
-    //     //         if (docSnap.exists()) {
-    //     //             setProductDetails(docSnap.data());
-    //     //             setQuantity(item.quantity);
-    //     //         }
-    //     //     };
-
-    //     //     getProductDetails();
-    //     //     isMounted.current = true;
-    //     //     return;
-    //     // }
-    // }, [productDetails]);
+        if (isMounted.current) {
+            handleUpdateQuantity(productDetails.product_id, productDetails);
+            return;
+        }
+    }, [productDetails]);
 
     if (!Object.keys(productDetails).length) {
         return (

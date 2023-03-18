@@ -21,6 +21,7 @@ const Cart = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   const activeDialogueId = useRef('');
+  const isMounted = useRef(false);
 
   const [cart, setCart] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -38,9 +39,9 @@ const Cart = () => {
     setSelectedItems((prevState) => [...prevState, productId]);
   };
 
-  const handleUpdateQuantity = (index, product) => {
-    setCart(cart.map((item, cartIndex) => {
-      if (index === cartIndex) {
+  const handleUpdateQuantity = (productId, product) => {
+    setCart(cart.map((item) => {
+      if (item.product_id === productId) {
         return product;
       }
 
@@ -66,13 +67,12 @@ const Cart = () => {
 
     sessionStorage.setItem('selected_items', JSON.stringify(newSelectedItems));
 
+    const userRef = doc(db, 'users', user.uid);
+    const itemRef = doc(userRef, 'items', activeDialogueId.current);
+    await deleteDoc(itemRef);
+
     setCart(newCart);
     setSelectedItems(newSelectedItems);
-
-
-    // const itemRef = doc(db, 'users', user.uid);
-    // const itemSnap = doc(itemRef, 'items', cart[activeDialogueId.current].product_id);
-    // await deleteDoc(itemSnap);
 
     location.reload();
   };
@@ -80,10 +80,30 @@ const Cart = () => {
   /**
    * Get all product IDs and update the is_paid status to true.
    */
-  const handleCheckout = () => {
-    // const productIds = selectedItems.map((index) => cart[index].product_id);
+  const handleCheckout = async () => {
+    const userRef = doc(db, 'users', user.uid);
+    const newCart = selectedItems.map((id) => {
+      return cart.find((item) => item.product_id !== id);
+    });
+
+    selectedItems.forEach(async (id) => {
+      const itemRef = doc(userRef, 'items', id);
+      await updateDoc(itemRef, {
+        is_paid: true,
+        date_paid: Date.now()
+      });
+    });
+
+    setCart(newCart);
+    setTotal(0);
+    setSelectedItems([]);
+
+    sessionStorage.removeItem('selected_items');
   };
 
+  /**
+   * Initializes the cart state.
+   */
   useEffect(() => {
     if (user === null) {
       navigate('/');
@@ -116,15 +136,29 @@ const Cart = () => {
     getItems();
   }, []);
 
+  /**
+   * If cart is initialized, set the selectedItem state based on the session.
+   */
   useEffect(() => {
     const selectedItemsSession = sessionStorage.getItem('selected_items');
 
     if (selectedItemsSession) {
       setSelectedItems(JSON.parse(selectedItemsSession));
     }
+
+    if (cart.length) {
+      isMounted.current = true;
+    }
   }, [cart]);
 
+  /**
+   * Change the total price when updating the selected items.
+   */
   useEffect(() => {
+    if (!isMounted.current) {
+      return;
+    }
+
     if (selectedItems.length && cart.length) {
       sessionStorage.setItem('selected_items', JSON.stringify(selectedItems));
 
@@ -138,10 +172,14 @@ const Cart = () => {
 
       setTotal(total);
     } else {
+      sessionStorage.removeItem('selected_items');
       setTotal(0);
     }
   }, [selectedItems]);
 
+  /**
+   * If dialogue is active, remove the ability to scroll in the body.
+   */
   useEffect(() => {
     if (dialogueIsActive) {
       document.body.classList.add('overflow-hidden');
