@@ -91,7 +91,6 @@ const NavBar = () => {
         </div>
         <p className="text-white">2023 © Sicat Dental Clinic</p>
       </div>
-
     </div>
   )
 };
