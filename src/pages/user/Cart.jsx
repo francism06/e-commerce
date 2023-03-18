@@ -22,7 +22,11 @@ const Cart = () => {
   const [selectedItems, setSelectedItems] = useState([]);
 
   const handleSelectItem = (event) => {
+    console.log(event);
+  };
 
+  const handleCheckout = (event) => {
+    console.log(selectedItems);
   };
 
   useEffect(() => {
@@ -49,10 +53,6 @@ const Cart = () => {
     getItems();
   }, []);
 
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
-
   if (!cart.length) {
     return (
       <div className="w-full h-full flex flex-row gap-4 px-12">
@@ -65,8 +65,8 @@ const Cart = () => {
   }
 
   return (
-    <div className="w-full h-full flex flex-row gap-4 px-12">
-      <div className="w-3/4 h-full flex flex-col gap-8">
+    <div className="w-full h-full flex flex-col xl:flex-row gap-4 px-12">
+      <div className="w-full xl:w-3/4 h-full flex flex-col gap-8">
         <div className="p-2 w-full flex flex-row justify-between bg-white border-2 border-black drop-shadow-primary">
           <div className="flex flex-row gap-2">
             <input type="checkbox" name="select-all" id="select-all" />
@@ -79,13 +79,13 @@ const Cart = () => {
         <div className="flex flex-col gap-4">
           {
             cart.map((item, index) => {
-              return <ProductCard key={index} item={item} />
+              return <ProductCard key={index} index={index} user={user.uid} item={item} handleSelectItem={handleSelectItem} />
             })
           }
         </div>
       </div>
-      <div className="p-2 w-1/4 h-full bg-white border-2 border-black drop-shadow-primary border-green-600">
-        <p>Test</p>
+      <div className="p-2 w-full xl:w-1/4 h-full bg-white border-2 border-black drop-shadow-primary border-green-600">
+        <button onClick={handleCheckout} className="w-full border-2 border-black px-4 py-2">Checkout</button>
       </div>
     </div>
   )

@@ -63,6 +63,11 @@ const ViewProduct = () => {
             return;
         }
 
+        if (parseInt(event.target.value) <= 0) {
+            setQuantity(1);
+            return;
+        }
+
         if (parseInt(event.target.value) > parseInt(productDetails.quantity)) {
             setQuantity(productDetails.quantity);
             return;
