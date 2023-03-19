@@ -104,12 +104,12 @@ const Cart = () => {
           const itemRef = doc(userRef, 'items', id);
           await updateDoc(itemRef, {
             is_paid: true,
-            date_paid: Date.now()
+            date_paid: Date.now(),
+            delivery_status: 'order_placed'
           });
 
           await updateDoc(producRef, {
             quantity: parseInt(productSnap.data().quantity) - parseInt(cartItem.quantity),
-            delivery_status: 'order_placed'
           });
 
           successfulTransactions.push(id);

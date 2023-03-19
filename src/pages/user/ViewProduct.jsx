@@ -26,6 +26,7 @@ const ViewProduct = () => {
     const handleAddToCart = async () => {
         if (user === null) {
             navigate('/login');
+            location.reload();
         }
 
         const details = {
