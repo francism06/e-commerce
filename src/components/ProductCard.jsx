@@ -44,7 +44,7 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
     };
 
     const handleSelect = () => {
-        handleSelectItem(productDetails.product_id);
+        handleSelectItem(productDetails.docRef);
         setIsSelected((prevState) => !prevState);
     };
 
@@ -54,7 +54,7 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
 
     useEffect(() => {
         if (Object.keys(productDetails).length) {
-            const isSelected = selectedItems.findIndex((item) => item === productDetails.product_id);
+            const isSelected = selectedItems.findIndex((item) => item === productDetails.docRef);
 
             if (isSelected !== -1) {
                 setIsSelected(true);
@@ -74,7 +74,7 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
             if (quantity !== productDetails.quantity) {
                 const updateQuantity = async () => {
                     const itemRef = doc(db, 'users', uid);
-                    await updateDoc(doc(itemRef, 'items', productDetails.product_id), {
+                    await updateDoc(doc(itemRef, 'items', productDetails.docRef), {
                         quantity: quantity,
                         total_price: quantity * parseInt(productDetails.price)
                     });
@@ -95,7 +95,7 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
 
     useEffect(() => {
         if (selectedItems.length) {
-            const isSelected = selectedItems.findIndex((item) => item === productDetails.product_id);
+            const isSelected = selectedItems.findIndex((item) => item === productDetails.docRef);
 
             if (isSelected !== -1) {
                 setIsSelected(true);
@@ -112,7 +112,7 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
         }
 
         if (isMounted.current) {
-            handleUpdateQuantity(productDetails.product_id, productDetails);
+            handleUpdateQuantity(productDetails.docRef, productDetails);
             return;
         }
     }, [productDetails]);
@@ -160,7 +160,7 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
                     <p>₱ {productDetails.total_price}</p>
                 </div>
                 <div className="w-20 flex justify-center items-center">
-                    <button onClick={() => handleOpenDialogue(productDetails.product_id)} className="text-red-500 active:text-red-900 text-xl">
+                    <button onClick={() => handleOpenDialogue(productDetails.docRef)} className="text-red-500 active:text-red-900 text-xl">
                         <Icon className="hover:scale-110 transition-all" icon="clarity:trash-solid" />
                     </button>
                 </div>

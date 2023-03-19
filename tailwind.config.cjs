@@ -18,12 +18,12 @@ module.exports = {
         'tertiary-active': '#FED936'
       },
       dropShadow: {
-        'primary': '5px 5px 0px rgba(0,0,0,1)',
-        'secondary': '5px 5px 0px rgba(61,134,177,1)',
-        'tertiary': '5px 5px 0px rgba(254,202,31,1)',
+        'primary': '3px 3px 0px rgba(0,0,0,1)',
+        'secondary': '3px 3px 0px rgba(61,134,177,1)',
+        'tertiary': '3px 3px 0px rgba(254,202,31,1)',
         'text': [
           '-1px -1px 0px rgba(0,0,0,1)',
-          '5px 5px 0px rgba(0,0,0,1)',
+          '3px 3px 0px rgba(0,0,0,1)',
         ]
       }
     },

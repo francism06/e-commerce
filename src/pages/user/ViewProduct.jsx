@@ -7,7 +7,10 @@ import {
     getDocs,
     updateDoc,
     collection,
-    setDoc
+    setDoc,
+    addDoc,
+    query,
+    where
 } from "firebase/firestore";
 
 import { Slider } from "../../components/Slider";
@@ -35,14 +38,27 @@ const ViewProduct = () => {
         };
 
         const itemRef = doc(db, 'users', user.uid);
-        const itemSnap = await getDoc(doc(itemRef, 'items', id));
+        const q = query(collection(itemRef, 'items'), where('product_id', '==', id), where('is_paid', '==', false));
 
-        // If item exists, update the quantity.
-        if (itemSnap.exists()) {
-            const currQuantity = itemSnap.data().quantity;
-            await updateDoc(doc(itemRef, 'items', id), { quantity: currQuantity + quantity });
+        const temp = [];
+
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            const newQuantity = parseInt(doc.data().quantity) + parseInt(quantity);
+            temp.push({
+                docId: doc.id,
+                refId: id,
+                quantity: newQuantity,
+                total_price: parseInt(newQuantity) * parseInt(productDetails.price)
+            });
+        });
+
+        if (Object.keys(temp).length !== 0) {
+            for await (const item of temp) {
+                await updateDoc(doc(itemRef, 'items', item.docId), { quantity: item.quantity, total_price: item.total_price });
+            }
         } else {
-            await setDoc(doc(itemRef, 'items', id), details);
+            await addDoc(collection(itemRef, 'items'), details);
         }
 
         location.reload();

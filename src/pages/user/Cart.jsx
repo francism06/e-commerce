@@ -41,7 +41,7 @@ const Cart = () => {
 
   const handleUpdateQuantity = (productId, product) => {
     setCart(cart.map((item) => {
-      if (item.product_id === productId) {
+      if (item.docRef === productId) {
         return product;
       }
 
@@ -62,7 +62,7 @@ const Cart = () => {
    */
   const handleRemoveItem = async () => {
     handleOpenDialogue(activeDialogueId.current);
-    const newCart = cart.filter((item) => item.product_id !== activeDialogueId.current);
+    const newCart = cart.filter((item) => item.docRef !== activeDialogueId.current);
     const newSelectedItems = selectedItems.filter((item) => item !== activeDialogueId.current);
 
     sessionStorage.setItem('selected_items', JSON.stringify(newSelectedItems));
@@ -82,19 +82,51 @@ const Cart = () => {
    */
   const handleCheckout = async () => {
     const userRef = doc(db, 'users', user.uid);
+    const successfulTransactions = [];
+
+    /**
+     * Perform a query to the products in order to get the latest quantity.
+     * If the selected quantity is less than the latest product quantity,
+     * it will update both and the transaction will succeed.
+     */
+    for await (const id of selectedItems) {
+      const cartItem = cart.find((item) => item.docRef === id);
+
+      if (cartItem === undefined) {
+        continue;
+      }
+
+      const producRef = doc(db, 'products', cartItem.product_id);
+      const productSnap = await getDoc(producRef);
+
+      if (productSnap.exists()) {
+        if (cartItem.quantity < productSnap.data().quantity) {
+          const itemRef = doc(userRef, 'items', id);
+          await updateDoc(itemRef, {
+            is_paid: true,
+            date_paid: Date.now()
+          });
+
+          await updateDoc(producRef, {
+            quantity: parseInt(productSnap.data().quantity) - parseInt(cartItem.quantity),
+            delivery_status: 'order_placed'
+          });
+
+          successfulTransactions.push(id);
+        }
+      }
+    }
+
     const newCart = selectedItems.map((id) => {
-      return cart.find((item) => item.product_id !== id);
+      const item = cart.find((item) => item.docRef !== id);
+      return item ? item : null;
     });
 
-    selectedItems.forEach(async (id) => {
-      const itemRef = doc(userRef, 'items', id);
-      await updateDoc(itemRef, {
-        is_paid: true,
-        date_paid: Date.now()
-      });
-    });
-
-    setCart(newCart);
+    if (newCart[0] === null) {
+      setCart([]);
+    } else {
+      setCart(newCart);
+    }
     setTotal(0);
     setSelectedItems([]);
 
@@ -117,7 +149,7 @@ const Cart = () => {
       const temp = [];
 
       itemSnap.forEach((item) => {
-        temp.push(item.data());
+        temp.push({ docRef: item.id, ...item.data() });
       });
 
       for (const value of temp) {
@@ -163,7 +195,7 @@ const Cart = () => {
       sessionStorage.setItem('selected_items', JSON.stringify(selectedItems));
 
       const total = selectedItems.reduce((accumulator, currValue) => {
-        const index = cart.findIndex((item) => item.product_id === currValue);
+        const index = cart.findIndex((item) => item.docRef === currValue);
 
         if (index !== -1) {
           return accumulator + cart[index].total_price;
