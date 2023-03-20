@@ -3,6 +3,7 @@ import { useNavigate, Link, useParams } from "react-router-dom";
 import { db } from "../../config/firebase";
 import {
   doc,
+  addDoc,
   getDoc,
   getDocs,
   deleteDoc,
@@ -106,6 +107,13 @@ const Cart = () => {
             is_paid: true,
             date_paid: Date.now(),
             delivery_status: 'order_placed'
+          });
+
+          await addDoc(collection(itemRef, 'status'), {
+            status: 'order_placed',
+            name: 'Order Placed',
+            description: 'Order has been placed.',
+            date_created: Date.now()
           });
 
           await updateDoc(producRef, {

@@ -9,7 +9,7 @@ import {
   updateDoc,
   collection,
   query,
-  where
+  orderBy
 } from "firebase/firestore";
 import { Icon } from "@iconify/react";
 
@@ -104,9 +104,14 @@ const ProgressTracker = ({ state }) => {
   )
 };
 
+const convertDateToString = (date) => {
+  return `${new Date(date).toDateString()} | ${new Date(date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+};
+
 const Tracking = () => {
   const [productDetails, setProductDetails] = useState({});
   const [userDetails, setUserDetails] = useState({});
+  const [deliveryStatus, setDeliveryStatus] = useState([]);
 
   const user = JSON.parse(localStorage.getItem('user'));
   const { id } = useParams();
@@ -137,8 +142,28 @@ const Tracking = () => {
   }, []);
 
   useEffect(() => {
-    console.log(state);
-  }, [userDetails]);
+    if (Object.keys(productDetails).length !== 0) {
+      const getDeliveryStatusDetails = async () => {
+        const statusRef = collection(db, 'users', user.uid, 'items', id, 'status');
+        const q = query(statusRef, orderBy('date_created', 'desc'));
+        const querySnapshop = await getDocs(q);
+
+        const temp = [];
+
+        querySnapshop.forEach((doc) => {
+          temp.push({ docId: doc.id, ...doc.data() });
+        });
+
+        setDeliveryStatus(temp);
+      }
+
+      getDeliveryStatusDetails();
+    }
+  }, [productDetails]);
+
+  useEffect(() => {
+    console.log(productDetails);
+  }, [productDetails]);
 
   if (Object.keys(productDetails).length === 0 && Object.keys(userDetails).length === 0) {
     return (
@@ -174,6 +199,54 @@ const Tracking = () => {
         </div>
         <div className="w-full flex flex-col gap-4">
           <p className="text-secondary font-bold">Track your Order</p>
+          <div className="flex flex-col gap-2 w-full">
+            {
+              deliveryStatus.length ? (
+                deliveryStatus.map((status, index) => {
+                  return (
+                    <div className={`grid grid-cols-2 ${index === 0 ? '' : 'text-slate-600 font-light'}`} key={index}>
+                      <p className={`${index === 0 ? 'font-bold' : ''}`}>{convertDateToString(status.date_created)}</p>
+                      <div className="flex flex-col">
+                        <p className={`${index === 0 ? 'font-bold' : ''}`}>{status.name}</p>
+                        <p>{status.description}</p>
+                      </div>
+                    </div>
+                  );
+                })
+              ) : (
+                <div>
+                  <p>No status available.</p>
+                </div>
+              )
+            }
+          </div>
+        </div>
+      </div>
+      <div className="w-full flex flex-col border-2 border-black drop-shadow-primary bg-white">
+        <div className="p-2 w-full bg-black">
+          <p className="text-white font-bold">Your Order</p>
+        </div>
+        <div className="p-2 w-full flex flex-row">
+          <div className="w-24 h-24 overflow-hidden">
+            <img className="w-24 h-24 p-4 object-contain" src={productDetails.product_details.images.length ? productDetails.product_details.images[0].url : '/Logo.png'} />
+          </div>
+          <div className="flex flex-col justify-center">
+            <p className="font-bold">{productDetails.product_details?.name}</p>
+            <p>{productDetails.product_details?.description}</p>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-row w-full place-content-end">
+        <div className="p-2 flex flex-col gap-4 w-2/4 xl:place-self-auto xl:w-1/4 h-full bg-white border-2 border-black drop-shadow-primary border-green-600">
+          <div>
+            <p className="font-bold text-lg">Order Summary</p>
+          </div>
+          <div className="flex flex-col">
+            <div className="flex flex-row justify-between">
+              <p className="font-bold">Total:</p>
+              <p>₱ {productDetails.total_price}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

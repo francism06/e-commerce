@@ -136,9 +136,9 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
             </div>
             <div className="w-full flex flex-row items-center gap-3">
                 {
-                    productDetails.product_details.images && (
+                    productDetails.product_details?.images && (
                         <div className="w-24 h-24 overflow-hidden">
-                            <img className="w-24 h-24 object-contain" src={productDetails.product_details.images[0].url} />
+                            <img className="w-24 h-24 object-contain" src={productDetails.product_details.images.length ? productDetails.product_details.images[0].url : '/Logo.png'} />
                         </div>
                     )
                 }
