@@ -47,11 +47,11 @@ const Products = () => {
         <table className="w-full table-fixed border-separate border-spacing-y-6">
           <thead>
             <tr className="bg-secondary drop-shadow-primary">
-              <th className="p-4 w-52 text-white rounded-l-lg border-l-2 border-y-2 border-black">Image</th>
+              <th className="p-4 w-52 text-white border-l-2 border-y-2 border-black">Image</th>
               <th className="p-4 flex-1 text-white text-left border-y-2 border-black">Name</th>
               <th className="p-4 w-32 text-white border-y-2 border-black">Quantity</th>
               <th className="p-4 w-32 text-white border-y-2 border-black">Price</th>
-              <th className="p-4 w-32 text-white rounded-r-lg border-r-2 border-y-2 border-black">Action</th>
+              <th className="p-4 w-32 text-white border-r-2 border-y-2 border-black">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -60,7 +60,7 @@ const Products = () => {
                 productList.map((product, index) => {
                   return (
                     <tr key={index} className="bg-white border-4 drop-shadow-primary">
-                      <td className="p-4 text-center rounded-l-lg border-l-2 border-y-2 border-black">
+                      <td className="p-4 text-center border-l-2 border-y-2 border-black">
                         <div className="flex justify-center items-center w-full h-full">
                           {
                             product.images.length ? (
@@ -79,7 +79,7 @@ const Products = () => {
                       </td>
                       <td className="p-4 text-center border-y-2 border-black"><p>{product.quantity}</p></td>
                       <td className="p-4 text-center border-y-2 border-black"><p>{product.price}</p></td>
-                      <td className="p-4 text-center rounded-r-lg border-r-2 border-y-2 border-black">
+                      <td className="p-4 text-center border-r-2 border-y-2 border-black">
                         <div className="flex w-full h-full justify-center items-center">
                           <SecondaryButton label={'Edit'} location={`edit/${product.id}`} />
                         </div>

@@ -5,8 +5,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  deleteDoc,
-  updateDoc,
   collection,
   query,
   orderBy
@@ -76,20 +74,13 @@ const ProgressTracker = ({ state }) => {
     <div className="flex flex-row w-full justify-center items-center py-8">
       {
         DELIVERY_STATUS.map((status, index) => {
-          if (index === 0) {
-            return (
-              <div className={`relative flex flex-col`} key={index}>
-                <div className={`flex w-24 h-24 rounded-full border-4 border-black justify-center items-center ${index <= stateIndex.current ? 'bg-black text-white' : 'bg-white'}`}>
-                  <Icon className={`text-6xl`} icon={status.properties.icon} />
-                </div>
-                <p className={`absolute mt-2 top-full text-center`}>{convertString(status.state)}</p>
-              </div>
-            )
-          }
-
           return (
             <div className={`flex flex-row justify-center items-center`} key={index}>
-              <hr className={`border-2 border-black w-32 ${index <= stateIndex.current ? 'border-solid' : 'border-dashed'}`} />
+              {
+                index !== 0 && (
+                  <hr className={`border-2 border-black w-32 ${index <= stateIndex.current ? 'border-solid' : 'border-dashed'}`} />
+                )
+              }
               <div className={`relative flex flex-col `}>
                 <div className={`flex w-24 h-24 rounded-full border-4 border-black justify-center items-center ${index <= stateIndex.current ? 'bg-black text-white' : 'bg-white'}`}>
                   <Icon className={` text-6xl`} icon={status.properties.icon} />

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebase";
 import {
-  collection,
-  getDocs,
-  addDoc,
-  updateDoc,
   doc,
+  getDoc,
+  getDocs,
   deleteDoc,
+  updateDoc,
+  collection,
+  query,
+  orderBy
 } from "firebase/firestore";
 
 /**
