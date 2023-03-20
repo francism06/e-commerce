@@ -64,11 +64,11 @@ const Products = () => {
             return (
               <Link to={product.id} className="min-h-[24rem] w-full h-full flex flex-col  bg-white border-4 border-black drop-shadow-primary hover:drop-shadow-tertiary transition-all" key={index}>
                 <div className="h-3/4 border-b-2 border-black flex justify-center items-center">
-                  <img className="w-full h-full object-contain" src={product.images.length ? product.images[0].url : ''} />
+                  <img className="w-full h-full object-contain" src={product.images.length ? product.images[0].url : '/Logo.png'} />
                 </div>
                 <div className="h-1/4 flex flex-col p-4 justify-between">
-                  <p className="w-full font-bold">{product.name}</p>
-                  <p className="w-full font-bold">PhP {product.price}</p>
+                  <p className="w-full">{product.name}</p>
+                  <p className="w-full font-bold">₱ {product.price}</p>
                 </div>
               </Link>
             )

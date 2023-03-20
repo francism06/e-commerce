@@ -100,7 +100,7 @@ const Cart = () => {
       const productSnap = await getDoc(producRef);
 
       if (productSnap.exists()) {
-        if (cartItem.quantity < productSnap.data().quantity) {
+        if (cartItem.quantity <= productSnap.data().quantity) {
           const itemRef = doc(userRef, 'items', id);
           await updateDoc(itemRef, {
             is_paid: true,
@@ -131,6 +131,7 @@ const Cart = () => {
     setSelectedItems([]);
 
     sessionStorage.removeItem('selected_items');
+    location.reload();
   };
 
   /**

@@ -29,6 +29,10 @@ const ViewProduct = () => {
             location.reload();
         }
 
+        if (productDetails.quantity === 0) {
+            return;
+        }
+
         const details = {
             'product_id': id,
             'quantity': quantity,
@@ -122,7 +126,13 @@ const ViewProduct = () => {
                     <p className="font-archivo text-2xl font-bold">{productDetails.name}</p>
                 </div>
                 <div>
-                    <p className="text-slate-600">{productDetails.description}</p>
+                    {
+                        (productDetails.description !== undefined && productDetails.description !== '') ? (
+                            <p className="text-slate-600">{productDetails.description}</p>
+                        ) : (
+                            <p className="text-slate-600">No description.</p>
+                        )
+                    }
                 </div>
                 <div>
                     <button className="cursor-default text-xl w-fit px-8 py-2 rounded-full bg-white border-4 border-black
@@ -135,16 +145,20 @@ const ViewProduct = () => {
                         <button onClick={handleAdd} className="border-y-2 border-r-2 border-black px-4 py-2 disabled:bg-slate-400 active:bg-secondary" disabled={quantity >= productDetails.quantity} >+</button>
                     </div>
                     {
-                        (productDetails.quantity !== 0 && productDetails.quantity <= 100) && (
+                        productDetails.quantity === 0 ? (
+                            <div>
+                                <p className="text-red-500">Out of Stock!</p>
+                            </div>
+                        ) : ((productDetails.quantity <= 100) && (
                             <div>
                                 <p className="text-slate-500">Only {productDetails.quantity} item/s remaining.</p>
                             </div>
-                        )
+                        ))
                     }
                 </div>
                 <div>
                     <button onClick={handleAddToCart} className="w-fit px-8 py-1 bg-secondary border-4 border-black text-white font-bold  drop-shadow-primary 
-                transition hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none active:bg-secondary-active" type="button">Add to Cart</button>
+                transition hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none active:bg-secondary-active disabled:bg-slate-500" type="button" disabled={productDetails.quantity === 0 ? true : false} >Add to Cart</button>
                 </div>
             </div>
         </div>

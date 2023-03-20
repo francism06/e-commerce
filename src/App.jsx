@@ -54,7 +54,7 @@ const App = () => {
         <Route path="register" element={<Register />} />
         <Route path="profile" element={<Profile />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="tracking" element={<Tracking />} />
+        <Route path="profile/tracking/:id" element={<Tracking />} />
       </Route>
 
       {/* ADMIN NAV */}

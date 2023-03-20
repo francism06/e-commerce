@@ -10,6 +10,10 @@ import {
   where
 } from "firebase/firestore";
 
+const convertString = (string) => {
+  return string !== '' && (string.charAt(0).toUpperCase() + string.slice(1)).replaceAll('_', ' ');
+};
+
 const Profile = () => {
   const [profileDetails, setProfileDetails] = useState({});
   const [currentProfileDetails, setCurrentProfileDetails] = useState({});
@@ -91,16 +95,22 @@ const Profile = () => {
           temp.push({ docId: doc.id, ...doc.data() });
         });
 
+        for (const value of temp) {
+          const docRef = doc(db, 'products', value.product_id);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const index = temp.findIndex((item) => item.product_id === value.product_id && item.product_details === undefined);
+            temp[index].product_details = docSnap.data();
+          }
+        }
+
         setPurchaseHistory(temp);
       };
 
       getPurchaseHistory();
     }
   }, [profileDetails]);
-
-  useEffect(() => {
-    console.log(purchaseHistory);
-  }, [purchaseHistory]);
 
   if (Object.keys(profileDetails).length === 0) {
     return (
@@ -168,15 +178,15 @@ const Profile = () => {
         <div className="flex flex-col">
           <p className="font-bold">Recent Purchased Products</p>
         </div>
-        <table>
+        <table className="table-fixed">
           <thead>
             <tr className="text-white bg-black">
-              <th className="p-2">Order Number</th>
-              <th className="p-2">Product Name</th>
-              <th className="p-2">Date of Purchase</th>
-              <th className="p-2">Status</th>
-              <th className="p-2">Total</th>
-              <th className="p-2">Action</th>
+              <th className="p-2 w-32">Order Number</th>
+              <th className="p-2 text-left">Product Name</th>
+              <th className="p-2 w-32">Date of Purchase</th>
+              <th className="p-2 w-32">Status</th>
+              <th className="p-2 w-32">Total</th>
+              <th className="p-2 w-32">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -184,8 +194,17 @@ const Profile = () => {
               purchaseHistory.length ? (
                 purchaseHistory.map((product, index) => {
                   return (
-                    <tr key={index}>
-                      <td><p>{ }</p></td>
+                    <tr key={index} className="text-center">
+                      <td className="p-2 border-b-2 border-b-black"><p>{product.docId}</p></td>
+                      <td className="p-2 border-b-2 border-b-black text-left"><p>{product?.product_details?.name}</p></td>
+                      <td className="p-2 border-b-2 border-b-black"><p>{new Date(product.date_created).toLocaleDateString()}</p></td>
+                      <td className="p-2 border-b-2 border-b-black"><p>{convertString(product?.delivery_status)}</p></td>
+                      <td className="p-2 border-b-2 border-b-black"><p>₱ {product.total_price}</p></td>
+                      <td className="p-2 border-b-2 border-b-black">
+                        <div className="flex flex-row justify-center items-center">
+                          <Link to={'tracking/' + product.docId} state={{ user: profileDetails, product: product }} className="border-2 border-black text-white bg-secondary p-2">View</Link>
+                        </div>
+                      </td>
                     </tr>
                   );
                 })
@@ -200,7 +219,7 @@ const Profile = () => {
           </tbody>
         </table>
       </div>
-    </div>
+    </div >
   )
 };
 

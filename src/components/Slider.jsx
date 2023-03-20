@@ -22,6 +22,16 @@ export const Slider = ({ content }) => {
         }
     }, [content]);
 
+    if (images.length === 0) {
+        return (
+            <div className="flex flex-col gap-4 w-full h-full">
+                <div className="w-full bg-white border-4 border-black  drop-shadow-primary">
+                    <img className="w-full object-fill p-8" src="/Logo.png" />
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="flex flex-col gap-4 w-full h-full">
             <div className="w-full bg-white border-4 border-black  drop-shadow-primary">
