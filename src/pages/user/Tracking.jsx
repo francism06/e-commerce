@@ -15,6 +15,10 @@ const convertString = (string) => {
   return string !== '' && (string.charAt(0).toUpperCase() + string.slice(1)).replaceAll('_', ' ');
 };
 
+const convertDateToString = (date) => {
+  return `${new Date(date).toDateString()} | ${new Date(date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+};
+
 const ProgressTracker = ({ state }) => {
   const [deliveryState, setDeliveryState] = useState('');
   const stateIndex = useRef(0);
@@ -95,10 +99,6 @@ const ProgressTracker = ({ state }) => {
   )
 };
 
-const convertDateToString = (date) => {
-  return `${new Date(date).toDateString()} | ${new Date(date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
-};
-
 const Tracking = () => {
   const [productDetails, setProductDetails] = useState({});
   const [userDetails, setUserDetails] = useState({});
@@ -131,30 +131,6 @@ const Tracking = () => {
 
     initializeProductDetails();
   }, []);
-
-  useEffect(() => {
-    if (Object.keys(productDetails).length !== 0) {
-      const getDeliveryStatusDetails = async () => {
-        const statusRef = collection(db, 'users', user.uid, 'items', id, 'status');
-        const q = query(statusRef, orderBy('date_created', 'desc'));
-        const querySnapshop = await getDocs(q);
-
-        const temp = [];
-
-        querySnapshop.forEach((doc) => {
-          temp.push({ docId: doc.id, ...doc.data() });
-        });
-
-        setDeliveryStatus(temp);
-      }
-
-      getDeliveryStatusDetails();
-    }
-  }, [productDetails]);
-
-  useEffect(() => {
-    console.log(productDetails);
-  }, [productDetails]);
 
   if (Object.keys(productDetails).length === 0 && Object.keys(userDetails).length === 0) {
     return (
@@ -192,13 +168,13 @@ const Tracking = () => {
           <p className="text-secondary font-bold">Track your Order</p>
           <div className="flex flex-col gap-2 w-full">
             {
-              deliveryStatus.length ? (
-                deliveryStatus.map((status, index) => {
+              productDetails.status.length ? (
+                productDetails.status.map((status, index) => {
                   return (
-                    <div className={`grid grid-cols-2 ${index === 0 ? '' : 'text-slate-600 font-light'}`} key={index}>
-                      <p className={`${index === 0 ? 'font-bold' : ''}`}>{convertDateToString(status.date_created)}</p>
+                    <div className={`grid grid-cols-2 ${index === (productDetails.status.length - 1) ? '' : 'text-slate-600 font-light'}`} key={index}>
+                      <p className={`${index === (productDetails.status.length - 1) ? 'font-bold' : ''}`}>{convertDateToString(status.date_created)}</p>
                       <div className="flex flex-col">
-                        <p className={`${index === 0 ? 'font-bold' : ''}`}>{status.name}</p>
+                        <p className={`${index === (productDetails.status.length - 1) ? 'font-bold' : ''}`}>{status.name}</p>
                         <p>{status.description}</p>
                       </div>
                     </div>

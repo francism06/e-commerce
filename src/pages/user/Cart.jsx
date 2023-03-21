@@ -106,15 +106,23 @@ const Cart = () => {
           await updateDoc(itemRef, {
             is_paid: true,
             date_paid: Date.now(),
-            delivery_status: 'order_placed'
+            delivery_status: 'order_placed',
+            status: [
+              {
+                status: 'order_placed',
+                name: 'Order Placed',
+                description: 'Order has been placed.',
+                date_created: Date.now()
+              }
+            ]
           });
 
-          await addDoc(collection(itemRef, 'status'), {
-            status: 'order_placed',
-            name: 'Order Placed',
-            description: 'Order has been placed.',
-            date_created: Date.now()
-          });
+          // await addDoc(collection(itemRef, 'status'), {
+          //   status: 'order_placed',
+          //   name: 'Order Placed',
+          //   description: 'Order has been placed.',
+          //   date_created: Date.now()
+          // });
 
           await updateDoc(producRef, {
             quantity: parseInt(productSnap.data().quantity) - parseInt(cartItem.quantity),
