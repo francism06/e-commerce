@@ -7,7 +7,8 @@ import {
   getDoc,
   getDocs,
   query,
-  where
+  where,
+  orderBy
 } from "firebase/firestore";
 
 const convertString = (string) => {
@@ -88,7 +89,7 @@ const Profile = () => {
     if (Object.keys(profileDetails).length !== 0) {
       const getPurchaseHistory = async () => {
         const userRef = doc(db, 'users', user.uid);
-        const q = query(collection(userRef, 'items'), where('delivery_status', 'in', ['order_placed', 'order_packed', 'order_shipped', 'order_delivered']));
+        const q = query(collection(userRef, 'items'), where('delivery_status', 'in', ['order_placed', 'order_packed', 'order_shipped', 'order_delivered']), orderBy('date_created', 'desc'));
         const querySnapshot = await getDocs(q);
 
         const temp = [];

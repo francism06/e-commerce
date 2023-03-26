@@ -56,6 +56,10 @@ const getPaymentMethod = (value) => {
   return PAYMENT_METHOD[PAYMENT_METHOD.findIndex((payment) => payment.method === value)]?.label;
 };
 
+const convertDateToString = (date) => {
+  return `${new Date(date).toDateString()} | ${new Date(date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+};
+
 // const getDeliveryStatus = (value) => {
 //   const index = DELIVERY_STATUS
 // }
@@ -65,7 +69,7 @@ const Transactions = () => {
 
   useEffect(() => {
     const getTransactions = async () => {
-      const q = query(collectionGroup(db, 'items'), where('delivery_status', 'in', ['order_placed', 'order_packed', 'order_shipped', 'order_delivered']));
+      const q = query(collectionGroup(db, 'items'), where('delivery_status', 'in', ['order_placed', 'order_packed', 'order_shipped', 'order_delivered']), orderBy('date_created', 'desc'));
       const querySnapshot = await getDocs(q);
 
       const temp = [];
@@ -101,6 +105,7 @@ const Transactions = () => {
         <thead>
           <tr className="bg-secondary drop-shadow-primary text-white">
             <th className="p-4 text-left border-l-2 border-y-2 border-black">Order ID</th>
+            <th className="p-4 border-y-2 border-black">Order Date</th>
             <th className="p-4 border-y-2 border-black">Payment Method</th>
             <th className="p-4 border-y-2 border-black">Total</th>
             <th className="p-4 border-r-2 border-y-2 border-black">Status</th>
@@ -113,6 +118,7 @@ const Transactions = () => {
                 return (
                   <tr key={index}>
                     <td className="p-4 text-left"><Link className="text-blue-400 underline" to={transaction.docId} state={{ transactionDetails: transaction }}>{transaction.docId}</Link></td>
+                    <td className="p-4"><p>{convertDateToString(transaction.date_created)}</p></td>
                     <td className="p-4"><p>{getPaymentMethod(transaction.payment_method)}</p></td>
                     <td className="p-4"><p>₱ {transaction.total_price}</p></td>
                     <td className="p-4"><p>{convertString(transaction.delivery_status)}</p></td>

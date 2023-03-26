@@ -179,7 +179,7 @@ const Cart = () => {
 
     const getItems = async () => {
       const itemRef = doc(db, 'users', user.uid);
-      const itemQuery = query(collection(itemRef, 'items'), where('deliver_status', 'not-in', ['order_placed', 'order_packed', 'order_shipped', 'order_delivered']));
+      const itemQuery = query(collection(itemRef, 'items'), where('delivery_status', '==', null));
       const itemSnap = await getDocs(itemQuery);
 
       const temp = [];

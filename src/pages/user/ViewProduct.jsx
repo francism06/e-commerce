@@ -37,7 +37,7 @@ const ViewProduct = () => {
             'product_id': id,
             'quantity': quantity,
             'price': parseInt(productDetails.price),
-            'deliver_status': null,
+            'delivery_status': null,
             'total_price': parseInt(quantity) * parseInt(productDetails.price),
             'is_paid': false,
             'date_created': Date.now()

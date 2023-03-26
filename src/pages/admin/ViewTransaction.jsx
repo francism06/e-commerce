@@ -16,22 +16,6 @@ import {
 } from "firebase/firestore";
 import { Icon } from "@iconify/react";
 
-
-/**
- * Transaction details
- * 
- * transaction_id
- * user_id
- * address
- * contact_number
- * item_id
- * quantity
- * price
- * date_bought
- * date_received
- * status
- */
-
 const PAYMENT_METHOD = [
     {
         label: 'Cash on Delivery',
@@ -111,11 +95,33 @@ const ViewTransaction = () => {
     };
 
     const handleFulfillPayment = async (event) => {
-        if (transactionDetails.is_paid) {
+        if (!Object.keys(userDetails).length || !Object.keys(transactionDetails).length) {
             return;
         }
 
-        console.log('Paid');
+        const docRef = doc(db, 'users', transactionDetails.userRef, 'items', id);
+        await updateDoc(docRef, {
+            is_paid: !transactionDetails.is_paid
+        });
+
+        setTransactionDetails((prevState) => {
+            return {
+                ...prevState,
+                is_paid: !transactionDetails.is_paid
+            }
+        });
+    };
+
+    const checkButtonState = (paymentMethod, deliveryStatus) => {
+        if (paymentMethod !== 'cod') {
+            return true;
+        }
+
+        if (deliveryStatus !== 'order_delivered') {
+            return true;
+        }
+
+        return false;
     };
 
     useEffect(() => {
@@ -133,7 +139,7 @@ const ViewTransaction = () => {
                 location.reload();
             }
 
-            setTransactionDetails(state.transactionDetails);
+            setTransactionDetails({ ...docSnap.data(), docId: docSnap.id, userRef: state?.transactionDetails?.userRef });
         };
 
         initializeTransactionDetails();
@@ -159,11 +165,6 @@ const ViewTransaction = () => {
         getUserDetails();
     }, [transactionDetails]);
 
-    useEffect(() => {
-        console.log('User details', userDetails);
-        console.log('Transaction detials', transactionDetails);
-    }, [userDetails]);
-
     if (!Object.keys(transactionDetails).length) {
         return (
             <div className='p-8'>
@@ -179,7 +180,7 @@ const ViewTransaction = () => {
     return (
         <div className="w-full flex flex-row p-8 gap-4">
             <div className="flex flex-col gap-4 w-3/5">
-                <div className="w-full flex flex-row justify-between bg-white border border-slate-200 drop-shadow-sm rounded-lg p-2">
+                <div className="w-full flex flex-row justify-between bg-white border border-slate-200 drop-shadow-sm rounded-lg p-4">
                     <Link className="flex flex-row items-center" to={'../transactions'}><Icon icon="clarity:angle-line" rotate={3} />Back</Link>
                     <div className="flex flex-row items-center">
                         <p>ORDER ID:</p>
@@ -221,6 +222,7 @@ const ViewTransaction = () => {
                         <thead>
                             <tr className="bg-black text-white">
                                 <th className="p-2">Payment Method</th>
+                                <th className="p-2">Paid</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -232,11 +234,14 @@ const ViewTransaction = () => {
                                         }
                                     </p>
                                 </td>
+                                <td className="p-2">
+                                    <p>{transactionDetails.is_paid.toString()}</p>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
                     <div className="flex flex-row gap-4 justify-end">
-                        <select value={DELIVERY_STATUS.findIndex((state) => state.status === transactionDetails.delivery_status)} className="p-2 border border-slate-200" name="delivery_status" id="deliver_status" onChange={updateDeliveryStatus}>
+                        <select value={DELIVERY_STATUS.findIndex((state) => state.status === transactionDetails.delivery_status)} className="p-2 border border-slate-200" name="delivery_status" id="delivery_status" onChange={updateDeliveryStatus}>
                             {
                                 DELIVERY_STATUS.map((state, index) => {
                                     return (
@@ -245,8 +250,10 @@ const ViewTransaction = () => {
                                 })
                             }
                         </select>
-                        <button onClick={handleFulfillPayment} className="bg-secondary hover:bg-secondary-active py-2 px-4 text-white disabled:bg-slate-200 disabled:text-slate-700" disabled={transactionDetails.is_paid ? true : false} >
-                            Fulfill Payment
+                        <button onClick={handleFulfillPayment} className={`${transactionDetails.is_paid ? 'bg-red-500 hover:bg-red-300' : 'bg-secondary hover:bg-secondary-active'} py-2 px-4 text-white disabled:bg-slate-200 disabled:text-slate-700`} disabled={(transactionDetails && checkButtonState(transactionDetails.payment_method, transactionDetails.delivery_status))} >
+                            {
+                                transactionDetails.is_paid ? 'Unfulfill Payment' : 'Fulfill Payment'
+                            }
                         </button>
                     </div>
                 </div>
