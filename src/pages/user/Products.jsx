@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { db } from "../../config/firebase";
 import {
   collection,
@@ -62,7 +62,7 @@ const Products = () => {
         {
           productList.map((product, index) => {
             return (
-              <Link to={product.id} className="min-h-[24rem] w-full h-full flex flex-col  bg-white border-4 border-black drop-shadow-primary hover:drop-shadow-tertiary transition-all" key={index}>
+              <Link to={product.id} className="min-h-[24rem] w-full h-full flex flex-col  bg-white border-2 border-black drop-shadow-primary hover:drop-shadow-tertiary transition-all" key={index}>
                 <div className="h-3/4 border-b-2 border-black flex justify-center items-center">
                   <img className="w-full h-full object-contain" src={product.images.length ? product.images[0].url : '/Logo.png'} />
                 </div>

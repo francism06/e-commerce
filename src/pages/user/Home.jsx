@@ -53,7 +53,7 @@ function Home() {
       </div>
 
       {/* Download App Section */}
-      <div className="flex flex-row mx-44 my-24 border-4 border-black bg-white  drop-shadow-primary overflow-hidden">
+      <div className="flex flex-row mx-44 my-24 border-2 border-black bg-white  drop-shadow-primary overflow-hidden">
         <div className="w-2/4 flex flex-col gap-8 p-12 justify-center bg-tertiary border-r-2 border-black">
           <h1 className="text-4xl font-bold text-black">Download our Application</h1>
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam eveniet, praesentium, eaque facilis veniam rem beatae minima expedita saepe hic dicta nihil in doloribus assumenda magni sint asperiores! Debitis sit ex accusantium dolorum, at architecto saepe fuga molestias dolore amet delectus veniam ducimus odit ad neque maiores eius minus magni?</p>

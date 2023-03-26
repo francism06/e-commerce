@@ -19,7 +19,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
  * quantity
  */
 
-const EditProduct = () => {
+const EditService = () => {
     const details = {
         'name': '',
         'description': '',
@@ -189,4 +189,4 @@ const EditProduct = () => {
     )
 };
 
-export default EditProduct;
+export default EditService;

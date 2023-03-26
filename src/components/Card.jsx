@@ -7,7 +7,7 @@ export const ServiceCard = ({ type = 0 }) => {
     return (
         <div className={`
             ${type ? 'bg-secondary text-white' : 'bg-white text-black'}
-            w-full h-full flex flex-col p-8  border-4 border-black drop-shadow-primary gap-8
+            w-full h-full flex flex-col p-8  border-2 border-black drop-shadow-primary gap-8
             `}
         >
             <div className='flex flex-col w-full gap-4'>
@@ -24,7 +24,7 @@ export const ServiceCard = ({ type = 0 }) => {
 export const ProductCard = () => {
     return (
         <div className={`
-            w-full h-full flex flex-col bg-white border-4 border-black drop-shadow-primary 
+            w-full h-full flex flex-col bg-white border-2 border-black drop-shadow-primary 
         `}>
             <div className='w-full'>
                 

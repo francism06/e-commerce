@@ -11,7 +11,10 @@ import AdminProducts from "./pages/admin/Products";
 import AdminCreateProduct from "./pages/admin/CreateProduct";
 import AdminEditProduct from "./pages/admin/EditProduct";
 import AdminServices from "./pages/admin/Services";
+import AdminCreateService from "./pages/admin/CreateService";
+import AdminEditService from "./pages/admin/EditService";
 import AdminTransactions from "./pages/admin/Transactions";
+import AdminViewTransactions from "./pages/admin/ViewTransaction";
 
 // User Components
 import Home from "./pages/user/Home";
@@ -61,10 +64,13 @@ const App = () => {
       <Route path="admin" element={<AdminNavBar />} >
         <Route index element={<AdminDashboard />} />
         <Route path="services" element={<AdminServices />} />
+        <Route path="services/create" element={<AdminCreateService />} />
+        <Route path="services/edit/:id" element={<AdminEditService />} />
         <Route path="products" element={<AdminProducts />} />
         <Route path="products/create" element={<AdminCreateProduct />} />
         <Route path="products/edit/:id" element={<AdminEditProduct />} />
         <Route path="transactions" element={<AdminTransactions />} />
+        <Route path="transactions/:id" element={<AdminViewTransactions />} />
         <Route path="manage-users" element={<ManageUsers />} />
       </Route>
 

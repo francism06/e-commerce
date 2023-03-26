@@ -92,7 +92,7 @@ const TEST_DATA = [
  */
 function ServiceCard ({ content = null, action = null }) {
     return (
-        <div className={`bg-white text-black w-full h-full flex flex-col p-8  border-4 border-black drop-shadow-primary gap-8`}
+        <div className={`bg-white text-black w-full h-full flex flex-col p-8  border-2 border-black drop-shadow-primary gap-8`}
         >
             <div className='flex flex-col w-full gap-4'>
                 <h1 className='text-xl font-bold'>{content.name}</h1>

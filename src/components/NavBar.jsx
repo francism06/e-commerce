@@ -35,7 +35,7 @@ const NavBar = () => {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <nav className='sticky top-4 h-22 md:w-[95%] w-3/4 flex flex-row justify-between items-center bg-white z-20 py-4 border-4 border-black drop-shadow-primary text-xs xl:text-sm'>
+      <nav className='sticky top-4 h-22 md:w-[95%] w-3/4 flex flex-row justify-between items-center bg-white z-20 py-4 border-2 border-black drop-shadow-primary text-xs xl:text-sm'>
         <a href="/" className='flex flex-row justify-center items-center mx-6 lg:mx-12 w-fit'>
           <img className='w-auto h-14' src="/Logo.png" alt="Sicat Dental Clinic Logo" />
           <p className='font-bold xl:text-xl px-2 w-fit text-secondary'>Sicat Dental Clinic</p>

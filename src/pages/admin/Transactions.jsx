@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../config/firebase";
+import { Link } from "react-router-dom";
 import {
   doc,
   getDoc,
@@ -13,31 +14,58 @@ import {
   orderBy
 } from "firebase/firestore";
 
-/**
- * Transaction details
- * 
- * transaction_id
- * user_id
- * address
- * contact_number
- * item_id
- * quantity
- * price
- * date_bought
- * date_received
- * status
- */
+const PAYMENT_METHOD = [
+  {
+    label: 'Cash on Delivery',
+    method: 'cod'
+  },
+  {
+    label: 'PayPal',
+    method: 'paypal'
+  }
+];
+
+const DELIVERY_STATUS = [
+  {
+    status: 'order_placed',
+    name: 'Order Placed',
+    description: 'Order has been placed.',
+  },
+  {
+    status: 'order_packed',
+    name: 'Order Packed',
+    description: 'Order has been packed.'
+  },
+  {
+    status: 'order_shipped',
+    name: 'Order Shipped',
+    description: 'Order has been shipped.'
+  },
+  {
+    status: 'order_delivered',
+    name: 'Order Delivered',
+    description: 'Order has been delivered.'
+  }
+];
 
 const convertString = (string) => {
   return string !== '' && (string.charAt(0).toUpperCase() + string.slice(1)).replaceAll('_', ' ');
 };
+
+const getPaymentMethod = (value) => {
+  return PAYMENT_METHOD[PAYMENT_METHOD.findIndex((payment) => payment.method === value)]?.label;
+};
+
+// const getDeliveryStatus = (value) => {
+//   const index = DELIVERY_STATUS
+// }
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     const getTransactions = async () => {
-      const q = query(collectionGroup(db, 'items'), where('is_paid', '==', true));
+      const q = query(collectionGroup(db, 'items'), where('delivery_status', 'in', ['order_placed', 'order_packed', 'order_shipped', 'order_delivered']));
       const querySnapshot = await getDocs(q);
 
       const temp = [];
@@ -52,31 +80,47 @@ const Transactions = () => {
     getTransactions();
   }, []);
 
-  useEffect(() => {
-    console.log(transactions);
-  }, [transactions]);
+  if (!transactions.length) {
+    return (
+      <div className='p-8'>
+        <div className="flex flex-col p-8 gap-2 w-full h-36 bg-slate-200 animate-pulse">
+          <div className="w-full h-8 bg-slate-300"></div>
+          <div className="w-full h-8 bg-slate-300"></div>
+          <div className="w-full h-8 bg-slate-300"></div>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="w-full">
-      <table className="w-full">
+    <div className="w-full h-full flex flex-col gap-4 p-12">
+      <div className="flex flex-row w-full justify-between items-center">
+        <p className="font-bold text-secondary">Transactions</p>
+      </div>
+      <table className="w-full text-center table-fixed border-separate border-spacing-y-6">
         <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Status</th>
+          <tr className="bg-secondary drop-shadow-primary text-white">
+            <th className="p-4 text-left border-l-2 border-y-2 border-black">Order ID</th>
+            <th className="p-4 border-y-2 border-black">Payment Method</th>
+            <th className="p-4 border-y-2 border-black">Total</th>
+            <th className="p-4 border-r-2 border-y-2 border-black">Status</th>
           </tr>
         </thead>
         <tbody>
-          {/* {
+          {
             transactions.length && (
               transactions.map((transaction, index) => {
                 return (
                   <tr key={index}>
-                    <td><p>Test</p></td>
+                    <td className="p-4 text-left"><Link className="text-blue-400 underline" to={transaction.docId} state={{ transactionDetails: transaction }}>{transaction.docId}</Link></td>
+                    <td className="p-4"><p>{getPaymentMethod(transaction.payment_method)}</p></td>
+                    <td className="p-4"><p>₱ {transaction.total_price}</p></td>
+                    <td className="p-4"><p>{convertString(transaction.delivery_status)}</p></td>
                   </tr>
                 )
               })
             )
-          } */}
+          }
         </tbody>
       </table>
     </div>

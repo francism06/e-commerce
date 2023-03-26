@@ -25,7 +25,7 @@ export const Slider = ({ content }) => {
     if (images.length === 0) {
         return (
             <div className="flex flex-col gap-4 w-full h-full">
-                <div className="w-full bg-white border-4 border-black  drop-shadow-primary">
+                <div className="w-full bg-white border-2 border-black  drop-shadow-primary">
                     <img className="w-full object-fill p-8" src="/Logo.png" />
                 </div>
             </div>
@@ -34,7 +34,7 @@ export const Slider = ({ content }) => {
 
     return (
         <div className="flex flex-col gap-4 w-full h-full">
-            <div className="w-full bg-white border-4 border-black  drop-shadow-primary">
+            <div className="w-full bg-white border-2 border-black  drop-shadow-primary">
                 {
                     images.length && (
                         <img className="w-full object-fill p-8" src={images[displayImage].url} />
@@ -47,7 +47,7 @@ export const Slider = ({ content }) => {
                         images.length && (
                             images.map((image, index) => {
                                 return (
-                                    <button onMouseEnter={() => handleHover(index)} key={index} className="bg-white border-4 w-fit border-black p-4   drop-shadow-primary hover:drop-shadow-tertiary transition-all">
+                                    <button onMouseEnter={() => handleHover(index)} key={index} className="bg-white border-2 w-fit border-black p-4   drop-shadow-primary hover:drop-shadow-tertiary transition-all">
                                         <img className="w-14 h-14 lg:w-20 lg:h-20 xl:w-26 xl:h-26 object-cover" src={image.url} />
                                     </button>
                                 )

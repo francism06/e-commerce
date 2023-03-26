@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, Link, useParams, useLocation } from "react-router-dom";
 import { db } from "../../config/firebase";
 import {
@@ -21,7 +21,7 @@ const convertDateToString = (date) => {
 
 const ProgressTracker = ({ state }) => {
   const [deliveryState, setDeliveryState] = useState('');
-  const stateIndex = useRef(0);
+  const [stateIndex, setStateIndex] = useState(0);
 
   const DELIVERY_STATUS = [
     {
@@ -58,11 +58,8 @@ const ProgressTracker = ({ state }) => {
 
   useEffect(() => {
     if (deliveryState !== undefined && deliveryState !== '') {
-      DELIVERY_STATUS.forEach((status, index) => {
-        if (status.state === deliveryState) {
-          stateIndex.current = index;
-        }
-      });
+      const index = DELIVERY_STATUS.findIndex((status) => status.state === deliveryState);
+      setStateIndex(index);
     }
   }, [deliveryState]);
 
@@ -82,11 +79,11 @@ const ProgressTracker = ({ state }) => {
             <div className={`flex flex-row justify-center items-center`} key={index}>
               {
                 index !== 0 && (
-                  <hr className={`border-2 border-black w-32 ${index <= stateIndex.current ? 'border-solid' : 'border-dashed'}`} />
+                  <hr className={`border-2 border-black w-32 ${index <= stateIndex ? 'border-solid' : 'border-dashed'}`} />
                 )
               }
               <div className={`relative flex flex-col `}>
-                <div className={`flex w-24 h-24 rounded-full border-4 border-black justify-center items-center ${index <= stateIndex.current ? 'bg-black text-white' : 'bg-white'}`}>
+                <div className={`flex w-24 h-24 rounded-full border-2 border-black justify-center items-center ${index <= stateIndex ? 'bg-black text-white' : 'bg-white'}`}>
                   <Icon className={` text-6xl`} icon={status.properties.icon} />
                 </div>
                 <p className={`absolute mt-2 top-full text-center`}>{convertString(status.state)}</p>
@@ -134,10 +131,12 @@ const Tracking = () => {
 
   if (Object.keys(productDetails).length === 0 && Object.keys(userDetails).length === 0) {
     return (
-      <div className='flex flex-col p-8 gap-2 w-full h-36 bg-slate-100 animate-pulse'>
-        <div className="w-full h-8 bg-slate-300"></div>
-        <div className="w-full h-8 bg-slate-300"></div>
-        <div className="w-full h-8 bg-slate-300"></div>
+      <div className="w-full px-8">
+        <div className='flex flex-col p-8 gap-2 w-full h-36 bg-slate-100 animate-pulse'>
+          <div className="w-full h-8 bg-slate-300"></div>
+          <div className="w-full h-8 bg-slate-300"></div>
+          <div className="w-full h-8 bg-slate-300"></div>
+        </div>
       </div>
     )
   }
@@ -166,7 +165,7 @@ const Tracking = () => {
         </div>
         <div className="w-full flex flex-col gap-4">
           <p className="text-secondary font-bold">Track your Order</p>
-          <div className="flex flex-col gap-2 w-full">
+          <div className="flex flex-col-reverse gap-2 w-full">
             {
               productDetails.status.length ? (
                 productDetails.status.map((status, index) => {

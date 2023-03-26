@@ -10,49 +10,41 @@ import {
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 /**
- * Product Details
+ * Service Details
  * 
  * name
  * description
  * image
- * category
- * price
- * quantity
+ * price_start
+ * price_end - nullable
+ * tags
+ * note
  */
 
-// const DisplayImage = ({ image, index, handleRemoveImage }) => {
-//     return (
-//         <button onClick={() => handleRemoveImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500  cursor-pointer" key={index}>
-//             <div className="opacity-0 hover:opacity-100 flex justify-center items-center absolute w-full h-full bg-slate-800/30 transition-all">
-//                 <p className="w-fit p-2 bg-red-600 text-white z-[1] ">Remove</p>
-//             </div>
-//             <img src={image.display} className="object-contain w-full h-72" />
-//         </button>
-//     )
-// };
-
-const CreateProduct = () => {
+const CreateService = () => {
     const details = {
         'name': '',
         'description': '',
         'images': [],
-        'price': 0,
-        'quantity': 0,
+        'price_start': 0,
+        'price_end': 0,
+        'tag': '',
+        'note': ''
     };
 
-    const [productDetails, setProductDetails] = useState(details);
+    const [serviceDetails, setServiceDetails] = useState(details);
     const [imagesSelected, setImagesSelected] = useState([]);
-    const navigate = useNavigate();
+    const navigate = useNavigate()
 
     const handleSubmit = async () => {
         // Uploads to collection
-        const docRef = await addDoc(collection(db, 'products'), { ...productDetails, 'date_created': Date.now() }).then((docRef) => docRef.id);
+        const docRef = await addDoc(collection(db, 'services'), { ...serviceDetails, 'date_created': Date.now() }).then((docRef) => docRef.id);
         const imageList = new Array();
 
         // Uploads images to storage
         if (imagesSelected.length) {
             for await (const image of imagesSelected) {
-                const productRef = ref(storage, `products/${docRef}/${image.name}`);
+                const productRef = ref(storage, `services/${docRef}/${image.name}`);
                 imageList.push(
                     await uploadBytes(ref(storage, productRef), image.file)
                         .then(async (snapshot) => {
@@ -64,7 +56,7 @@ const CreateProduct = () => {
             }
         }
 
-        setProductDetails((prevState) => {
+        setServiceDetails((prevState) => {
             return {
                 ...prevState,
                 'images': imageList
@@ -72,15 +64,15 @@ const CreateProduct = () => {
         });
 
         // Updates collection
-        await updateDoc(doc(db, 'products', docRef), {
+        await updateDoc(doc(db, 'services', docRef), {
             images: imageList
         });
 
-        navigate('../products');
+        navigate('../services');
     };
 
     const handleChange = (event) => {
-        setProductDetails((prevState) => {
+        setServiceDetails((prevState) => {
             return {
                 ...prevState,
                 [event.target.id]: event.target.value
@@ -115,11 +107,11 @@ const CreateProduct = () => {
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
                     <p>Name</p>
-                    <input onChange={handleChange} value={productDetails.name} placeholder="Enter product name here..." className="border-2 border-black px-2 py-1" type="text" name="name" id="name" />
+                    <input onChange={handleChange} value={serviceDetails.name} placeholder="Enter product name here..." className="border-2 border-black px-2 py-1" type="text" name="name" id="name" />
                 </div>
                 <div className="flex flex-col">
                     <p>Description</p>
-                    <textarea onChange={handleChange} value={productDetails.description} placeholder="Enter description here..." className="border-2 border-black px-2 py-1 resize-none" name="description" id="description" cols="30" rows="10"></textarea>
+                    <textarea onChange={handleChange} value={serviceDetails.description} placeholder="Enter description here..." className="border-2 border-black px-2 py-1 resize-none" name="description" id="description" cols="30" rows="10"></textarea>
                 </div>
                 <div className="flex flex-col">
                     <p>Image</p>
@@ -140,17 +132,27 @@ const CreateProduct = () => {
                     </div>
                     <input hidden={true} onChange={handleUploadImage} accept="image/" className="border-2 border-black px-2 py-1" type="file" name="image" id="image" />
                 </div>
-                <div className="flex flex-col">
-                    <p>Price</p>
-                    <input onChange={handleChange} placeholder="Enter price here..." value={productDetails.price} className="border-2 border-black px-2 py-1" type="text" name="price" id="price" />
+                <div className="flex flex-row gap-4">
+                    <div className="flex flex-col">
+                        <p>Price Start</p>
+                        <input onChange={handleChange} placeholder="Enter price here..." value={serviceDetails.price_start} className="border-2 border-black px-2 py-1" type="text" name="price_start" id="price_start" />
+                    </div>
+                    <div className="flex flex-col">
+                        <p>Price End</p>
+                        <input onChange={handleChange} placeholder="Enter price here..." value={serviceDetails.price_end} className="border-2 border-black px-2 py-1" type="text" name="price_end" id="price_end" />
+                    </div>
                 </div>
                 <div className="flex flex-col">
-                    <p>Quantity</p>
-                    <input onChange={handleChange} placeholder="Enter quantity here..." value={productDetails.quantity} className="border-2 border-black px-2 py-1" type="text" name="quantity" id="quantity" />
+                    <p>Note <span className="text-slate-500">(e.g. per tooth, per arch, per quadrant)</span></p>
+                    <input onChange={handleChange} placeholder="Enter note here..." value={serviceDetails.note} className="border-2 border-black px-2 py-1 w-2/4" type="text" name="note" id="note" />
+                </div>
+                <div className="flex flex-col">
+                    <p>Tag <span className="text-slate-500">(e.g. Diagnostics, Surgery)</span></p>
+                    <input onChange={handleChange} placeholder="Enter tag here..." value={serviceDetails.tag} className="border-2 border-black px-2 py-1 w-2/4" type="text" name="tag" id="tag" />
                 </div>
             </div>
         </div>
     )
 };
 
-export default CreateProduct;
+export default CreateService;

@@ -18,6 +18,17 @@ import { ProductCard } from "../../components/ProductCard";
 import { DialogueModal } from "../../components/Modals";
 import { createPortal } from "react-dom";
 
+const PAYMENT_METHOD = [
+  {
+    label: 'Cash on Delivery',
+    method: 'cod'
+  },
+  {
+    label: 'PayPal',
+    method: 'paypal'
+  }
+];
+
 const Cart = () => {
   const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
@@ -28,6 +39,7 @@ const Cart = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [total, setTotal] = useState(0);
   const [dialogueIsActive, setDialogueIsActive] = useState(false);
+  const [paymentType, setPaymentType] = useState('');
 
   const handleSelectItem = (productId) => {
     const isExisting = selectedItems.findIndex((item) => item === productId);
@@ -85,6 +97,11 @@ const Cart = () => {
     const userRef = doc(db, 'users', user.uid);
     const successfulTransactions = [];
 
+    if (!selectedItems.length && paymentType === '') {
+      location.reload();
+      return;
+    }
+
     /**
      * Perform a query to the products in order to get the latest quantity.
      * If the selected quantity is less than the latest product quantity,
@@ -104,9 +121,9 @@ const Cart = () => {
         if (cartItem.quantity <= productSnap.data().quantity) {
           const itemRef = doc(userRef, 'items', id);
           await updateDoc(itemRef, {
-            is_paid: true,
             date_paid: Date.now(),
             delivery_status: 'order_placed',
+            payment_method: PAYMENT_METHOD[paymentType].method,
             status: [
               {
                 status: 'order_placed',
@@ -116,13 +133,6 @@ const Cart = () => {
               }
             ]
           });
-
-          // await addDoc(collection(itemRef, 'status'), {
-          //   status: 'order_placed',
-          //   name: 'Order Placed',
-          //   description: 'Order has been placed.',
-          //   date_created: Date.now()
-          // });
 
           await updateDoc(producRef, {
             quantity: parseInt(productSnap.data().quantity) - parseInt(cartItem.quantity),
@@ -150,6 +160,15 @@ const Cart = () => {
     location.reload();
   };
 
+  const handleSelectPayment = (index) => {
+    if (index === paymentType) {
+      setPaymentType('');
+      return;
+    }
+
+    setPaymentType(index);
+  };
+
   /**
    * Initializes the cart state.
    */
@@ -160,7 +179,7 @@ const Cart = () => {
 
     const getItems = async () => {
       const itemRef = doc(db, 'users', user.uid);
-      const itemQuery = query(collection(itemRef, 'items'), where('is_paid', '==', false));
+      const itemQuery = query(collection(itemRef, 'items'), where('deliver_status', 'not-in', ['order_placed', 'order_packed', 'order_shipped', 'order_delivered']));
       const itemSnap = await getDocs(itemQuery);
 
       const temp = [];
@@ -237,6 +256,12 @@ const Cart = () => {
     }
   }, [dialogueIsActive]);
 
+  useEffect(() => {
+    if (paymentType !== '') {
+      console.log(paymentType);
+    }
+  }, [paymentType]);
+
   if (!cart.length) {
     return (
       <div className="w-full h-full flex flex-row gap-4 px-12">
@@ -262,17 +287,33 @@ const Cart = () => {
             }
           </div>
         </div>
-        <div className="p-2 flex flex-col gap-4 place-self-end w-2/4 xl:place-self-auto xl:w-1/4 h-full bg-white border-2 border-black drop-shadow-primary border-green-600">
-          <div>
-            <p className="font-bold text-lg">Order Summary</p>
-          </div>
-          <div className="flex flex-col">
-            <div className="flex flex-row justify-between">
-              <p className="font-bold">Total:</p>
-              <p>₱ {total}</p>
+        <div className="flex flex-col gap-4 place-self-end w-2/4 xl:place-self-auto xl:w-1/4 h-full">
+          <div className="p-2 flex flex-col gap-4 place-self-end w-full h-full bg-white border-2 border-black drop-shadow-primary">
+            <div>
+              <p className="font-bold text-lg">Order Summary</p>
+            </div>
+            <div className="flex flex-col">
+              <div className="flex flex-row justify-between">
+                <p className="font-bold">Total:</p>
+                <p>₱ {total}</p>
+              </div>
             </div>
           </div>
-          <button onClick={handleCheckout} className="w-full border-2 border-black px-4 py-2 bg-white disabled:bg-slate-400" disabled={selectedItems.length ? false : true}>Checkout</button>
+          <div className="p-2 flex flex-col gap-4 place-self-end w-full h-full bg-white border-2 border-black drop-shadow-primary">
+            <div>
+              <p className="font-bold text-lg">Payment Method</p>
+            </div>
+            <div className="flex flex-col gap-2">
+              {
+                PAYMENT_METHOD.map((payment, index) => {
+                  return (
+                    <button key={index} className={`${parseInt(paymentType) === index ? 'bg-tertiary' : 'bg-white'} border-2 border-black p-2`} onClick={() => handleSelectPayment(index)} value={payment.method} name="payment_method">{payment.label}</button>
+                  );
+                })
+              }
+            </div>
+          </div>
+          <button onClick={handleCheckout} className="w-full border-2 border-black px-4 py-2 bg-white disabled:bg-slate-400" disabled={selectedItems.length && paymentType !== '' ? false : true}>Checkout</button>
         </div>
       </div>
 

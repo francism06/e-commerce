@@ -62,6 +62,7 @@ const Profile = () => {
   useEffect(() => {
     if (user === null) {
       navigate('/');
+      return;
     }
 
     if (user !== null && Object.keys(user).length !== 0) {
@@ -87,7 +88,7 @@ const Profile = () => {
     if (Object.keys(profileDetails).length !== 0) {
       const getPurchaseHistory = async () => {
         const userRef = doc(db, 'users', user.uid);
-        const q = query(collection(userRef, 'items'), where('is_paid', '==', true));
+        const q = query(collection(userRef, 'items'), where('delivery_status', 'in', ['order_placed', 'order_packed', 'order_shipped', 'order_delivered']));
         const querySnapshot = await getDocs(q);
 
         const temp = [];
@@ -114,10 +115,12 @@ const Profile = () => {
 
   if (Object.keys(profileDetails).length === 0) {
     return (
-      <div className='flex flex-col p-8 gap-2 w-full h-36 bg-slate-100 animate-pulse'>
-        <div className="w-full h-8 bg-slate-300"></div>
-        <div className="w-full h-8 bg-slate-300"></div>
-        <div className="w-full h-8 bg-slate-300"></div>
+      <div className="px-8">
+        <div className='flex flex-col p-8 gap-2 w-full h-36 bg-slate-100 animate-pulse'>
+          <div className="w-full h-8 bg-slate-300"></div>
+          <div className="w-full h-8 bg-slate-300"></div>
+          <div className="w-full h-8 bg-slate-300"></div>
+        </div>
       </div>
     )
   }
