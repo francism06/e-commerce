@@ -10,7 +10,8 @@ import {
     setDoc,
     addDoc,
     query,
-    where
+    where,
+    serverTimestamp
 } from "firebase/firestore";
 
 import { Slider } from "../../components/Slider";
@@ -40,7 +41,7 @@ const ViewProduct = () => {
             'delivery_status': null,
             'total_price': parseInt(quantity) * parseInt(productDetails.price),
             'is_paid': false,
-            'date_created': Date.now()
+            'date_created': serverTimestamp
         };
 
         const itemRef = doc(db, 'users', user.uid);

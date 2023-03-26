@@ -10,7 +10,8 @@ import {
   updateDoc,
   collection,
   query,
-  where
+  where,
+  serverTimestamp
 } from "firebase/firestore";
 
 import { PrimaryButton } from "../../components/Elements";
@@ -121,7 +122,7 @@ const Cart = () => {
         if (cartItem.quantity <= productSnap.data().quantity) {
           const itemRef = doc(userRef, 'items', id);
           await updateDoc(itemRef, {
-            date_paid: Date.now(),
+            date_paid: serverTimestamp,
             delivery_status: 'order_placed',
             payment_method: PAYMENT_METHOD[paymentType].method,
             status: [
@@ -129,7 +130,7 @@ const Cart = () => {
                 status: 'order_placed',
                 name: 'Order Placed',
                 description: 'Order has been placed.',
-                date_created: Date.now()
+                date_created: serverTimestamp
               }
             ]
           });
@@ -255,12 +256,6 @@ const Cart = () => {
       document.body.classList.remove('overflow-hidden');
     }
   }, [dialogueIsActive]);
-
-  useEffect(() => {
-    if (paymentType !== '') {
-      console.log(paymentType);
-    }
-  }, [paymentType]);
 
   if (!cart.length) {
     return (

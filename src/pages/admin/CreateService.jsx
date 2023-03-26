@@ -6,6 +6,7 @@ import {
     addDoc,
     updateDoc,
     doc,
+    serverTimestamp
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
@@ -38,7 +39,7 @@ const CreateService = () => {
 
     const handleSubmit = async () => {
         // Uploads to collection
-        const docRef = await addDoc(collection(db, 'services'), { ...serviceDetails, 'date_created': Date.now() }).then((docRef) => docRef.id);
+        const docRef = await addDoc(collection(db, 'services'), { ...serviceDetails, 'date_created': serverTimestamp }).then((docRef) => docRef.id);
         const imageList = new Array();
 
         // Uploads images to storage
@@ -100,18 +101,18 @@ const CreateService = () => {
             <div className="flex flex-row justify-between items-center">
                 <p className="font-bold text-secondary">Products</p>
                 <div className="flex flex-row gap-2">
-                    <Link to={'../products'} className="px-4 py-2 flex justify-center items-center border-2 border-secondary text-secondary ">Cancel</Link>
+                    <Link to={'../products'} className="px-4 py-2 flex justify-center items-center drop-shadow-sm border border-secondary text-secondary ">Cancel</Link>
                     <button onClick={handleSubmit} type="button" className="px-4 py-2 flex justify-center items-center bg-secondary text-white ">Save</button>
                 </div>
             </div>
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
                     <p>Name</p>
-                    <input onChange={handleChange} value={serviceDetails.name} placeholder="Enter product name here..." className="border-2 border-black px-2 py-1" type="text" name="name" id="name" />
+                    <input onChange={handleChange} value={serviceDetails.name} placeholder="Enter product name here..." className="drop-shadow-sm border border-slate-200 px-2 py-1" type="text" name="name" id="name" />
                 </div>
                 <div className="flex flex-col">
                     <p>Description</p>
-                    <textarea onChange={handleChange} value={serviceDetails.description} placeholder="Enter description here..." className="border-2 border-black px-2 py-1 resize-none" name="description" id="description" cols="30" rows="10"></textarea>
+                    <textarea onChange={handleChange} value={serviceDetails.description} placeholder="Enter description here..." className="drop-shadow-sm border border-slate-200 px-2 py-1 resize-none" name="description" id="description" cols="30" rows="10"></textarea>
                 </div>
                 <div className="flex flex-col">
                     <p>Image</p>
@@ -130,25 +131,25 @@ const CreateService = () => {
                         }
                         <label htmlFor="image" className="flex justify-center items-center w-full h-72 cursor-pointer border border-gray-500 ">Upload Image</label>
                     </div>
-                    <input hidden={true} onChange={handleUploadImage} accept="image/" className="border-2 border-black px-2 py-1" type="file" name="image" id="image" />
+                    <input hidden={true} onChange={handleUploadImage} accept="image/" className="drop-shadow-sm border border-slate-200 px-2 py-1" type="file" name="image" id="image" />
                 </div>
                 <div className="flex flex-row gap-4">
                     <div className="flex flex-col">
                         <p>Price Start</p>
-                        <input onChange={handleChange} placeholder="Enter price here..." value={serviceDetails.price_start} className="border-2 border-black px-2 py-1" type="text" name="price_start" id="price_start" />
+                        <input onChange={handleChange} placeholder="Enter price here..." value={serviceDetails.price_start} className="drop-shadow-sm border border-slate-200 px-2 py-1" type="text" name="price_start" id="price_start" />
                     </div>
                     <div className="flex flex-col">
                         <p>Price End</p>
-                        <input onChange={handleChange} placeholder="Enter price here..." value={serviceDetails.price_end} className="border-2 border-black px-2 py-1" type="text" name="price_end" id="price_end" />
+                        <input onChange={handleChange} placeholder="Enter price here..." value={serviceDetails.price_end} className="drop-shadow-sm border border-slate-200 px-2 py-1" type="text" name="price_end" id="price_end" />
                     </div>
                 </div>
                 <div className="flex flex-col">
                     <p>Note <span className="text-slate-500">(e.g. per tooth, per arch, per quadrant)</span></p>
-                    <input onChange={handleChange} placeholder="Enter note here..." value={serviceDetails.note} className="border-2 border-black px-2 py-1 w-2/4" type="text" name="note" id="note" />
+                    <input onChange={handleChange} placeholder="Enter note here..." value={serviceDetails.note} className="drop-shadow-sm border border-slate-200 px-2 py-1 w-2/4" type="text" name="note" id="note" />
                 </div>
                 <div className="flex flex-col">
                     <p>Tag <span className="text-slate-500">(e.g. Diagnostics, Surgery)</span></p>
-                    <input onChange={handleChange} placeholder="Enter tag here..." value={serviceDetails.tag} className="border-2 border-black px-2 py-1 w-2/4" type="text" name="tag" id="tag" />
+                    <input onChange={handleChange} placeholder="Enter tag here..." value={serviceDetails.tag} className="drop-shadow-sm border border-slate-200 px-2 py-1 w-2/4" type="text" name="tag" id="tag" />
                 </div>
             </div>
         </div>

@@ -12,7 +12,8 @@ import {
     query,
     where,
     orderBy,
-    arrayUnion
+    arrayUnion,
+    serverTimestamp
 } from "firebase/firestore";
 import { Icon } from "@iconify/react";
 
@@ -76,7 +77,7 @@ const ViewTransaction = () => {
 
         const status = {
             ...DELIVERY_STATUS[index],
-            date_created: Date.now()
+            date_created: serverTimestamp
         };
 
         await updateDoc(docRef, {

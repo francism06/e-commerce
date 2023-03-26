@@ -101,14 +101,14 @@ const Transactions = () => {
       <div className="flex flex-row w-full justify-between items-center">
         <p className="font-bold text-secondary">Transactions</p>
       </div>
-      <table className="w-full text-center table-fixed border-separate border-spacing-y-6">
+      <table className="w-full text-center table-fixed border-separate border-spacing-y-2">
         <thead>
-          <tr className="bg-secondary drop-shadow-primary text-white">
-            <th className="p-4 text-left border-l-2 border-y-2 border-black">Order ID</th>
-            <th className="p-4 border-y-2 border-black">Order Date</th>
-            <th className="p-4 border-y-2 border-black">Payment Method</th>
-            <th className="p-4 border-y-2 border-black">Total</th>
-            <th className="p-4 border-r-2 border-y-2 border-black">Status</th>
+          <tr className="bg-black text-white">
+            <th className="p-4 text-left border-l border-y border-slate-200">Order ID</th>
+            <th className="p-4 border-y border-slate-200">Order Date</th>
+            <th className="p-4 border-y border-slate-200">Payment Method</th>
+            <th className="p-4 border-y border-slate-200">Total</th>
+            <th className="p-4 border-r border-y border-slate-200">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -116,12 +116,12 @@ const Transactions = () => {
             transactions.length && (
               transactions.map((transaction, index) => {
                 return (
-                  <tr key={index}>
-                    <td className="p-4 text-left"><Link className="text-blue-400 underline" to={transaction.docId} state={{ transactionDetails: transaction }}>{transaction.docId}</Link></td>
-                    <td className="p-4"><p>{convertDateToString(transaction.date_created)}</p></td>
-                    <td className="p-4"><p>{getPaymentMethod(transaction.payment_method)}</p></td>
-                    <td className="p-4"><p>₱ {transaction.total_price}</p></td>
-                    <td className="p-4"><p>{convertString(transaction.delivery_status)}</p></td>
+                  <tr key={index} className="bg-white">
+                    <td className="p-4 text-left border-l border-y border-slate-200"><Link className="text-blue-400 underline" to={transaction.docId} state={{ transactionDetails: transaction }}>{transaction.docId}</Link></td>
+                    <td className="p-4 border-y border-slate-200"><p>{convertDateToString(transaction.date_created)}</p></td>
+                    <td className="p-4 border-y border-slate-200"><p>{getPaymentMethod(transaction.payment_method)}</p></td>
+                    <td className="p-4 border-y border-slate-200"><p>₱ {transaction.total_price}</p></td>
+                    <td className="p-4 border-r border-y border-slate-200"><p>{convertString(transaction.delivery_status)}</p></td>
                   </tr>
                 )
               })
