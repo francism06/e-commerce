@@ -14,7 +14,7 @@ const ViewUser = () => {
 
     useEffect(() => {
         if (!id) {
-            navigate('/manage-users');
+            navigate('../manage-users');
             location.reload();
         }
 
@@ -23,7 +23,7 @@ const ViewUser = () => {
             const docSnap = await getDoc(docRef);
 
             if (!docSnap.exists()) {
-                navigate('/manage-users');
+                navigate('../manage-users');
                 location.reload();
             }
 

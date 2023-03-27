@@ -169,11 +169,12 @@ const Tracking = () => {
             {
               productDetails.status.length ? (
                 productDetails.status.map((status, index) => {
-                  const time = new Date(status.date_created.seconds * 1000 + status.date_created.nanoseconds / 1000000).toLocaleDateString();
+                  const date = new Date(status.date_created.seconds * 1000 + status.date_created.nanoseconds / 1000000);
+                  const datetime = `${date.toDateString()} | ${date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
 
                   return (
                     <div className={`grid grid-cols-2 ${index === (productDetails.status.length - 1) ? '' : 'text-slate-600 font-light'}`} key={index}>
-                      <p className={`${index === (productDetails.status.length - 1) ? 'font-bold' : ''}`}>{time}</p>
+                      <p className={`${index === (productDetails.status.length - 1) ? 'font-bold' : ''}`}>{datetime}</p>
                       <div className="flex flex-col">
                         <p className={`${index === (productDetails.status.length - 1) ? 'font-bold' : ''}`}>{status.name}</p>
                         <p>{status.description}</p>
@@ -205,7 +206,7 @@ const Tracking = () => {
         </div>
       </div>
       <div className="flex flex-row w-full place-content-end">
-        <div className="p-2 flex flex-col gap-4 w-2/4 xl:place-self-auto xl:w-1/4 h-full bg-white border-2 border-black drop-shadow-primary border-green-600">
+        <div className="p-2 flex flex-col gap-4 w-2/4 xl:place-self-auto xl:w-1/4 h-full bg-white border-2 border-black drop-shadow-primary">
           <div>
             <p className="font-bold text-lg">Order Summary</p>
           </div>

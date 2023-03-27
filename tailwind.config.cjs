@@ -13,7 +13,6 @@ module.exports = {
       colors: {
         'secondary': '#3D86B1',
         'tertiary': '#FECA1F',
-        'green': '#5AB658',
         'secondary-active': '#549FB9',
         'tertiary-active': '#FED936'
       },

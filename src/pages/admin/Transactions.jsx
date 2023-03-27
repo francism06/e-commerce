@@ -108,7 +108,8 @@ const Transactions = () => {
             <th className="p-4 border-y border-slate-200">Order Date</th>
             <th className="p-4 border-y border-slate-200">Payment Method</th>
             <th className="p-4 border-y border-slate-200">Total</th>
-            <th className="p-4 border-r border-y border-slate-200">Status</th>
+            <th className="p-4 border-y border-slate-200">Status</th>
+            <th className="p-4 border-r border-y border-slate-200">Payment</th>
           </tr>
         </thead>
         <tbody>
@@ -117,13 +118,20 @@ const Transactions = () => {
               transactions.map((transaction, index) => {
                 const time = new Date(transaction.date_created.seconds * 1000 + transaction.date_created.nanoseconds / 1000000).toLocaleDateString();
 
+                console.log(transaction);
+
                 return (
                   <tr key={index} className="bg-white">
                     <td className="p-4 text-left border-l border-y border-slate-200"><Link className="text-blue-400 underline" to={transaction.docId} state={{ transactionDetails: transaction }}>{transaction.docId}</Link></td>
                     <td className="p-4 border-y border-slate-200"><p>{time}</p></td>
                     <td className="p-4 border-y border-slate-200"><p>{getPaymentMethod(transaction.payment_method)}</p></td>
                     <td className="p-4 border-y border-slate-200"><p>₱ {transaction.total_price}</p></td>
-                    <td className="p-4 border-r border-y border-slate-200"><p>{convertString(transaction.delivery_status)}</p></td>
+                    <td className="p-4 border-y border-slate-200"><p>{convertString(transaction.delivery_status)}</p></td>
+                    <td className={`p-4 border-r border-y border-slate-200`}>
+                      <div className="flex justify-center items-center w-full h-full">
+                        <p className={`w-fit rounded-full border px-4 py-2 ${transaction.is_paid ? 'border-green-500 text-green-500 bg-green-100' : 'border-red-500 text-red-500 bg-red-100'}`}>{transaction.is_paid ? 'Fulfilled' : 'Unfulfilled'}</p>
+                      </div>
+                    </td>
                   </tr>
                 )
               })

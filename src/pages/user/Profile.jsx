@@ -9,7 +9,8 @@ import {
   query,
   where,
   orderBy,
-  serverTimestamp
+  serverTimestamp,
+  updateDoc
 } from "firebase/firestore";
 
 const convertString = (string) => {
@@ -48,6 +49,12 @@ const Profile = () => {
    * Update Firebase user details on submit.
    */
   const handleSaveProfile = () => {
+    const updateUserProfile = async () => {
+      const userRef = doc(db, 'users', user.uid);
+      await updateDoc(userRef, profileDetails)
+    };
+
+    updateUserProfile();
     setCurrentProfileDetails(profileDetails);
     handleEditProfile();
   };

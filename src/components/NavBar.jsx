@@ -80,7 +80,7 @@ const NavBar = () => {
 
       <div className="w-full h-64 bg-black flex flex-col justify-center items-center gap-4">
         <p className="text-tertiary text-2xl font-bold">Sicat Dental Clinic</p>
-        <p className="text-white">1337 Myriam Spur, Haneborough, Burkina Faso</p>
+        <p className="text-white">Conception, Tarlac City</p>
         <div className="flex flex-row gap-4">
           <a href="" className="bg-white rounded-full p-2">
             <Icon icon="bxl:facebook" className="text-black text-2xl" />

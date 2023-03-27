@@ -267,9 +267,11 @@ const ViewTransaction = () => {
                         {
                             transactionDetails.status && transactionDetails.status.length ? (
                                 transactionDetails.status.map((status, index) => {
+                                    const datetime = `${(status.date_created.toDate()).toDateString()} | ${(status.date_created.toDate()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+
                                     return (
                                         <div className={`grid grid-cols-2 ${index === (transactionDetails.status.length - 1) ? '' : 'text-slate-600 font-light'}`} key={index}>
-                                            <p className={`${index === (transactionDetails.status.length - 1) ? 'font-bold' : ''}`}>{(status.date_created.toDate()).toLocaleDateString()}</p>
+                                            <p className={`${index === (transactionDetails.status.length - 1) ? 'font-bold' : ''}`}>{datetime}</p>
                                             <div className="flex flex-col">
                                                 <p className={`${index === (transactionDetails.status.length - 1) ? 'font-bold' : ''}`}>{status.name}</p>
                                                 <p>{status.description}</p>

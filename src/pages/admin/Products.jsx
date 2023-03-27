@@ -97,8 +97,8 @@ const Products = () => {
                             <p className="text-slate-600">{product.description}</p>
                           </div>
                         </td>
-                        <td className="p-4 text-center border-y border-slate-200"><p>{parseInt(product.quantity)}</p></td>
-                        <td className="p-4 text-center border-y border-slate-200"><p>{product.price}</p></td>
+                        <td className={`p-4 text-center border-y border-slate-200 ${!product.quantity && 'text-red-500'} `}><p>{parseInt(product.quantity)}</p></td>
+                        <td className={`p-4 text-center border-y border-slate-200`}><p>{product.price}</p></td>
                         <td className="p-4 text-center border-r border-y border-slate-200">
                           <div className="flex w-full h-full justify-center items-center gap-2">
                             <Link className="px-4 py-2 border border-secondary text-secondary" to={`edit/${product.id}`} >Edit</Link>

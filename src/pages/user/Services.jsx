@@ -65,7 +65,7 @@ const Services = () => {
                     </div>
                     <div className='w-full h-[80vh] bg-white overflow-auto'>
                         <div className='h-2/4'>
-                            <img className='h-full w-full object-cover border-b-2 border-black' src={serviceList[activeServiceIndex].images.length ? serviceList[activeServiceIndex].images[0].url : 'More-Service.jpg'} />
+                            <img className={`h-full w-full object-cover border-b-2 border-black ${serviceList[activeServiceIndex].images.length ? '' : 'grayscale'}`} src={serviceList[activeServiceIndex].images.length ? serviceList[activeServiceIndex].images[0].url : 'More-Service.jpg'} />
                         </div>
                         <div className='p-8 w-full h-2/4 flex flex-col gap-4 relative'>
                             <div className='flex flex-col lg:flex-row gap-4 lg:items-center'>
@@ -85,7 +85,7 @@ const Services = () => {
                                 )
                             }
                             <p>{serviceList[activeServiceIndex].description}</p>
-                            <Link className='absolute bottom-8 primary-btn place-self-end mt-auto' to={'contact-us'}>Contact Us!</Link>
+                            <Link className='absolute bottom-8 primary-btn place-self-end mt-auto' to={'/contact-us'}>Contact Us!</Link>
                         </div>
                     </div>
                 </div>

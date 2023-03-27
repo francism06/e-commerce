@@ -42,18 +42,18 @@ const Products = () => {
 
   return (
     <div className="w-full h-full flex flex-col gap-4">
-      <div className="flex flex-row justify-center gap-4 px-24 py-4">
+      <div className="flex flex-row justify-center items-end gap-4 px-8 lg:px-24 py-4">
         <div className="flex flex-col gap-2 flex-1">
           <label htmlFor="search">Search</label>
-          <input onChange={handleSearch} type="text" name="search" id="search" value={search} />
+          <input className="input-field" onChange={handleSearch} type="text" name="search" id="search" value={search} />
         </div>
         <div className="flex flex-col gap-2 justify-center items-center">
-          <select className="p-2" onChange={handleFilter} name="filter" id="filter">
+          <select className="p-2 input-field" onChange={handleFilter} name="filter" id="filter">
             <option value="">Filter</option>
           </select>
         </div>
         <div className="flex flex-col gap-2 justify-center items-center">
-          <select className="p-2" onChange={handleSort} name="sort" id="sort">
+          <select className="p-2 input-field" onChange={handleSort} name="sort" id="sort">
             <option value="">Sort</option>
           </select>
         </div>
@@ -64,7 +64,7 @@ const Products = () => {
             return (
               <Link to={product.id} className="min-h-[24rem] w-full h-full flex flex-col  bg-white border-2 border-black drop-shadow-primary hover:drop-shadow-tertiary transition-all" key={index}>
                 <div className="h-3/4 border-b-2 border-black flex justify-center items-center">
-                  <img className="w-full h-full object-contain" src={product.images.length ? product.images[0].url : '/Logo.png'} />
+                  <img className={`w-full h-full object-contain ${product.images.length ? '' : 'p-8'}`} src={product.images.length ? product.images[0].url : '/Logo.png'} />
                 </div>
                 <div className="h-1/4 flex flex-col p-4 justify-between">
                   <p className="w-full">{product.name}</p>
