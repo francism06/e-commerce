@@ -30,7 +30,7 @@ const ViewProduct = () => {
             location.reload();
         }
 
-        if (productDetails.quantity === 0) {
+        if (productDetails.quantity === 0 && isNaN(productDetails.quantity)) {
             return;
         }
 
@@ -160,7 +160,7 @@ const ViewProduct = () => {
                 </div>
                 <div>
                     <button onClick={handleAddToCart} className="w-fit px-8 py-1 bg-secondary border-2 border-black text-white font-bold  drop-shadow-primary 
-                transition hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none active:bg-secondary-active disabled:bg-slate-500" type="button" disabled={productDetails.quantity === 0 ? true : false} >Add to Cart</button>
+                transition hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none active:bg-secondary-active disabled:bg-slate-500" type="button" disabled={(isNaN(productDetails.quantity) || productDetails.quantity === 0) ? true : false} >Add to Cart</button>
                 </div>
             </div>
         </div>

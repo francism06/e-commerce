@@ -49,11 +49,18 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
     };
 
     useEffect(() => {
-        setProductDetails(item);
+        if (Object.keys(item).length) {
+            setProductDetails(item);
+        }
     }, [item]);
 
     useEffect(() => {
-        if (Object.keys(productDetails).length) {
+        if (isMounted.current) {
+            handleUpdateQuantity(productDetails.docRef, productDetails);
+            return;
+        }
+
+        if (Object.keys(productDetails).length && !isMounted.current) {
             const isSelected = selectedItems.findIndex((item) => item === productDetails.docRef);
 
             if (isSelected !== -1) {
@@ -107,14 +114,7 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
     }, [selectedItems]);
 
     useEffect(() => {
-        if (!isMounted.current) {
-            return;
-        }
-
-        if (isMounted.current) {
-            handleUpdateQuantity(productDetails.docRef, productDetails);
-            return;
-        }
+        console.log('Product Card', productDetails);
     }, [productDetails]);
 
     if (!Object.keys(productDetails).length) {

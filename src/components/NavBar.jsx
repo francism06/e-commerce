@@ -4,12 +4,21 @@ import { Outlet, NavLink } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../config/firebase";
+import { db, auth } from "../config/firebase";
+import {
+  doc,
+  query,
+  collection,
+  where,
+  getCountFromServer
+} from "firebase/firestore";
+
 
 import { PrimaryButton } from "./Elements";
 
 const NavBar = () => {
   const [active, setActive] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
   const [user, setUser] = useState({});
   const navigate = useNavigate();
 
@@ -19,17 +28,9 @@ const NavBar = () => {
     }
   }
 
-  // useEffect(() => {
-  //   if (user !== null && Object.keys(user).length !== 0) {
-  //     const isAdmin = user.is_admin;
-
-  //     isAdmin && navigate('/admin');
-  //   }
-  // }, [user]);
-
   /**
    * Checks if the user is admin then redirects to dashboard
-   */
+  */
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -53,6 +54,16 @@ const NavBar = () => {
       const isAdmin = user.is_admin;
 
       isAdmin && navigate('/admin');
+
+      const getCartCount = async () => {
+        const itemRef = doc(db, 'users', user.uid);
+        const itemQuery = query(collection(itemRef, 'items'), where('delivery_status', '==', null));
+        const itemSnap = await getCountFromServer(itemQuery);
+
+        setCartCount(itemSnap.data().count);
+      }
+
+      getCartCount();
     }
   }, [user]);
 
@@ -89,7 +100,8 @@ const NavBar = () => {
           {
             (user !== null && Object.keys(user).length !== 0) ? (
               <div className="flex flex-row justify-center items-center gap-4">
-                <NavLink to={"/cart"}>
+                <NavLink className={`relative`} to={"/cart"}>
+                  <p className="absolute w-6 h-6 bg-red-500 rounded-full bottom-3 left-3 text-white flex justify-center items-center z-[1]">{cartCount}</p>
                   <Icon icon="material-symbols:shopping-bag-outline" className="text-2xl" />
                 </NavLink>
                 <NavLink to={"/profile"} className={`font-bold`}>{user.email}</NavLink>

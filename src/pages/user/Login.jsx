@@ -60,7 +60,7 @@ const Login = () => {
 
     return (
         <div className="w-full h-[80vh] flex justify-center items-center">
-            <div className="w-3/5 h-4/5 flex flex-row bg-white border-2 border-black drop-shadow-primary-xl">
+            <div className="w-4/5 xl:w-3/5 h-4/5 flex flex-row bg-white border-2 border-black drop-shadow-primary-xl">
                 <div className="w-2/4 h-full border-r-2 border-black flex justify-center items-center">
                     <img src="Logo.png" alt="Sicat Dental Clinic Logo" />
                 </div>
