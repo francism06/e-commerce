@@ -19,6 +19,7 @@ module.exports = {
       },
       dropShadow: {
         'primary': '3px 3px 0px rgba(0,0,0,1)',
+        'primary-xl': '8px 8px 0px rgba(0,0,0,1)',
         'secondary': '3px 3px 0px rgba(61,134,177,1)',
         'tertiary': '3px 3px 0px rgba(254,202,31,1)',
         'text': [

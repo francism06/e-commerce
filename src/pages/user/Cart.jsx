@@ -11,7 +11,8 @@ import {
   collection,
   query,
   where,
-  serverTimestamp
+  serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 
 import { PrimaryButton } from "../../components/Elements";
@@ -122,7 +123,7 @@ const Cart = () => {
         if (cartItem.quantity <= productSnap.data().quantity) {
           const itemRef = doc(userRef, 'items', id);
           await updateDoc(itemRef, {
-            date_paid: serverTimestamp,
+            date_paid: serverTimestamp(),
             delivery_status: 'order_placed',
             payment_method: PAYMENT_METHOD[paymentType].method,
             status: [
@@ -130,7 +131,7 @@ const Cart = () => {
                 status: 'order_placed',
                 name: 'Order Placed',
                 description: 'Order has been placed.',
-                date_created: serverTimestamp
+                date_created: Timestamp.now()
               }
             ]
           });

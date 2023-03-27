@@ -169,9 +169,11 @@ const Tracking = () => {
             {
               productDetails.status.length ? (
                 productDetails.status.map((status, index) => {
+                  const time = new Date(status.date_created.seconds * 1000 + status.date_created.nanoseconds / 1000000).toLocaleDateString();
+
                   return (
                     <div className={`grid grid-cols-2 ${index === (productDetails.status.length - 1) ? '' : 'text-slate-600 font-light'}`} key={index}>
-                      <p className={`${index === (productDetails.status.length - 1) ? 'font-bold' : ''}`}>{convertDateToString(status.date_created)}</p>
+                      <p className={`${index === (productDetails.status.length - 1) ? 'font-bold' : ''}`}>{time}</p>
                       <div className="flex flex-col">
                         <p className={`${index === (productDetails.status.length - 1) ? 'font-bold' : ''}`}>{status.name}</p>
                         <p>{status.description}</p>

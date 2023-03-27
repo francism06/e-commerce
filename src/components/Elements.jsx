@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 export const Header = ({ title }) => {
     return (
-        <h1 className="font-bold text-2xl p-4 bg-tertiary border-2 border-black drop-shadow-primary">{title}</h1>
+        <h1 className="font-paytone text-2xl p-4 bg-tertiary border-2 border-black drop-shadow-primary">{title}</h1>
     )
 };
 

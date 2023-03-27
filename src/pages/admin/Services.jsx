@@ -4,10 +4,8 @@ import { db } from "../../config/firebase";
 import {
   collection,
   getDocs,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
+  query,
+  orderBy
 } from "firebase/firestore";
 
 /**
@@ -22,8 +20,31 @@ import {
  * note
  */
 
+const displayPrice = (priceStart, priceEnd = null) => {
+  let priceString = `₱ ${priceStart}`;
+  if (priceEnd !== null || priceEnd !== 0) {
+    priceString += ` - ₱ ${priceEnd}`
+  }
+
+  return priceString;
+};
+
 const Services = () => {
   const [serviceList, setServiceList] = useState([]);
+
+  useEffect(() => {
+    const getServices = async () => {
+      const queryRef = collection(db, 'services');
+      const querySnap = await getDocs(query(queryRef, orderBy('date_created', 'desc')));
+
+      const service = new Array();
+      querySnap.forEach((doc) => service.push({ id: doc.id, ...doc.data() }));
+
+      setServiceList(service);
+    };
+
+    getServices();
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col gap-4 p-12">
@@ -36,9 +57,11 @@ const Services = () => {
           <thead>
             <tr className="bg-black drop-shadow-sm text-white">
               <th className="p-4 w-52 border-l border-y border-slate-200">Image</th>
-              <th className="p-4 flex-1 text-left border-y border-slate-200">Name</th>
-              <th className="p-4 w-32 border-y border-slate-200">Price</th>
-              <th className="p-4 w-32 border-r-2 border-y border-slate-200">Action</th>
+              <th className="p-4 w-96 text-left border-y border-slate-200">Name</th>
+              <th className="p-4 border-y border-slate-200">Price</th>
+              <th className="p-4 border-y border-slate-200">Tag</th>
+              <th className="p-4 border-y border-slate-200">Note</th>
+              <th className="p-4 border-r-2 border-y border-slate-200">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -46,7 +69,7 @@ const Services = () => {
               serviceList.length ? (
                 serviceList.map((service, index) => {
                   return (
-                    <tr key={index} className="bg-white border drop-shadow-sm">
+                    <tr key={index} className="bg-white border drop-shadow-sm text-center">
                       <td className="p-4 text-center border-l border-y border-slate-200">
                         <div className="flex justify-center items-center w-full h-full">
                           {
@@ -58,10 +81,16 @@ const Services = () => {
                           }
                         </div>
                       </td>
-                      <td className="p-4 border-y border-slate-200">
+                      <td className="p-4 border-y border-slate-200 text-left">
                         <p>{service.name}</p>
                       </td>
-                      <td className="p-4 text-center border-y border-slate-200"><p>{service.price}</p></td>
+                      <td className="p-4 text-center border-y border-slate-200"><p>{displayPrice(service.price_start, service.price_end)}</p></td>
+                      <td className="p-4 border-y border-slate-200">
+                        <p>{service.tag}</p>
+                      </td>
+                      <td className="p-4 border-y border-slate-200">
+                        <p>{service.note}</p>
+                      </td>
                       <td className="p-4 text-center border-r-2 border-y border-slate-200">
                         <div className="flex w-full h-full justify-center items-center">
                           <Link className="px-4 py-2 border border-secondary text-secondary" to={`edit/${service.id}`} >Edit</Link>

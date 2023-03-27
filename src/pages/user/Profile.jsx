@@ -8,7 +8,8 @@ import {
   getDocs,
   query,
   where,
-  orderBy
+  orderBy,
+  serverTimestamp
 } from "firebase/firestore";
 
 const convertString = (string) => {
@@ -201,7 +202,7 @@ const Profile = () => {
                     <tr key={index} className="text-center">
                       <td className="p-2 border-b-2 border-b-black"><p>{product.docId}</p></td>
                       <td className="p-2 border-b-2 border-b-black text-left"><p>{product?.product_details?.name}</p></td>
-                      <td className="p-2 border-b-2 border-b-black"><p>{new Date(product.date_created).toLocaleDateString()}</p></td>
+                      <td className="p-2 border-b-2 border-b-black"><p>{(product.date_created.toDate()).toLocaleDateString()}</p></td>
                       <td className="p-2 border-b-2 border-b-black"><p>{convertString(product?.delivery_status)}</p></td>
                       <td className="p-2 border-b-2 border-b-black"><p>₱ {product.total_price}</p></td>
                       <td className="p-2 border-b-2 border-b-black">

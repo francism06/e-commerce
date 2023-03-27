@@ -10,3 +10,17 @@
         font-family: Verdana, Geneva, Tahoma, sans-serif;
     }
 }
+
+@layer components {
+    .input-field {
+        @apply border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary;
+    }
+
+    .primary-btn {
+        @apply w-fit px-8 py-1 bg-secondary border-2 border-black text-white font-bold drop-shadow-primary transition hover:translate-x-1 hover:translate-y-1 hover:drop-shadow-none active:bg-secondary-active;
+    }
+
+    .secondary-btn {
+        @apply w-fit px-8 py-1 bg-white border-2 border-black transition hover:-translate-x-1 hover:-translate-y-1 hover:drop-shadow-primary active:bg-secondary-active;
+    }
+}

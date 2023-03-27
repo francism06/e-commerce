@@ -39,15 +39,15 @@ const CreateService = () => {
 
     const handleSubmit = async () => {
         // Uploads to collection
-        const docRef = await addDoc(collection(db, 'services'), { ...serviceDetails, 'date_created': serverTimestamp }).then((docRef) => docRef.id);
+        const docRef = await addDoc(collection(db, 'services'), { ...serviceDetails, 'date_created': serverTimestamp() }).then((docRef) => docRef.id);
         const imageList = new Array();
 
         // Uploads images to storage
         if (imagesSelected.length) {
             for await (const image of imagesSelected) {
-                const productRef = ref(storage, `services/${docRef}/${image.name}`);
+                const serviceRef = ref(storage, `services/${docRef}/${image.name}`);
                 imageList.push(
-                    await uploadBytes(ref(storage, productRef), image.file)
+                    await uploadBytes(ref(storage, serviceRef), image.file)
                         .then(async (snapshot) => {
                             return {
                                 url: await getDownloadURL(snapshot.ref),
@@ -99,16 +99,16 @@ const CreateService = () => {
     return (
         <div className="w-full h-full flex flex-col gap-4 p-4">
             <div className="flex flex-row justify-between items-center">
-                <p className="font-bold text-secondary">Products</p>
+                <p className="font-bold text-secondary">Services</p>
                 <div className="flex flex-row gap-2">
-                    <Link to={'../products'} className="px-4 py-2 flex justify-center items-center drop-shadow-sm border border-secondary text-secondary ">Cancel</Link>
+                    <Link to={'../services'} className="px-4 py-2 flex justify-center items-center drop-shadow-sm border border-secondary text-secondary ">Cancel</Link>
                     <button onClick={handleSubmit} type="button" className="px-4 py-2 flex justify-center items-center bg-secondary text-white ">Save</button>
                 </div>
             </div>
             <div className="flex flex-col gap-4">
                 <div className="flex flex-col">
                     <p>Name</p>
-                    <input onChange={handleChange} value={serviceDetails.name} placeholder="Enter product name here..." className="drop-shadow-sm border border-slate-200 px-2 py-1" type="text" name="name" id="name" />
+                    <input onChange={handleChange} value={serviceDetails.name} placeholder="Enter service name here..." className="drop-shadow-sm border border-slate-200 px-2 py-1" type="text" name="name" id="name" />
                 </div>
                 <div className="flex flex-col">
                     <p>Description</p>

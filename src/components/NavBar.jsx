@@ -74,11 +74,11 @@ const NavBar = () => {
         </div>
       </nav>
 
-      <div className="w-full pt-12 min-h-screen">
+      <div className="w-full py-12 min-h-screen flex flex-col">
         <Outlet />
       </div>
 
-      <div className="w-full h-64 bg-black mt-12 flex flex-col justify-center items-center gap-4">
+      <div className="w-full h-64 bg-black flex flex-col justify-center items-center gap-4">
         <p className="text-tertiary text-2xl font-bold">Sicat Dental Clinic</p>
         <p className="text-white">1337 Myriam Spur, Haneborough, Burkina Faso</p>
         <div className="flex flex-row gap-4">

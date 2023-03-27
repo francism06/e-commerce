@@ -1,123 +1,96 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react';
+import { db } from '../../config/firebase';
+import { Link } from 'react-router-dom';
+import {
+    collection,
+    getDocs
+} from 'firebase/firestore';
 
-import { SecondaryButton, TertiaryButton } from '../../components/Elements';
+const Services = () => {
+    const [serviceList, setServiceList] = useState([]);
+    const [activeServiceIndex, setActiveServiceIndex] = useState(0);
 
-const TEST_DATA = [
-    {
-        'name': 'Consultation',
-        'description': 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio, tempore.',
-        'image': '',
-        'tags': 'Diagnostics',
-        'price_start': '400',
-        'price_end': '',
-        'note': ''
-    },
-    {
-        'name': 'Tooth Extraction',
-        'description': 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Animi, quam.',
-        'image': '',
-        'tags': 'Surgery',
-        'price_start': '500',
-        'price_end': '2000',
-        'note': 'per tooth'
-    },
-    {
-        'name': 'Odontectomy',
-        'description': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. In, quo.',
-        'image': '',
-        'tags': 'Surgery',
-        'price_start': '6000',
-        'price_end': '15000',
-        'note': 'per tooth'
-    },
-    {
-        'name': 'Metal Post',
-        'description': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, nisi!',
-        'image': '',
-        'tags': 'Endodontics',
-        'price_start': '2500',
-        'price_end': '',
-        'note': ''
-    },
-    {
-        'name': 'Oral Prophylaxis',
-        'description': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, minus!',
-        'image': '',
-        'tags': 'Periodontics',
-        'price_start': '600',
-        'price_end': '2500',
-        'note': ''
-    },
-    {
-        'name': 'Ortho Treatment',
-        'description': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut, reprehenderit!',
-        'image': '',
-        'tags': 'Orthodontics',
-        'price_start': '50000',
-        'price_end': '100000',
-        'note': '30% minimum down payment'
-    },
-    {
-        'name': 'New Ace',
-        'description': 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, officia.',
-        'image': '',
-        'tags': 'Prosthodontics',
-        'price_start': '14000',
-        'price_end': '',
-        'note': ''
-    },
-    {
-        'name': 'Justi',
-        'description': 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed, delectus.',
-        'image': '',
-        'tags': 'Prosthodontics',
-        'price_start': '20000',
-        'price_end': '',
-        'note': ''
-    },
-    {
-        'name': 'ZOOM',
-        'description': 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Recusandae, eveniet!',
-        'image': '',
-        'tags': 'Bleaching',
-        'price_start': '25000',
-        'price_end': '',
-        'note': ''
-    },
-];
+    useEffect(() => {
+        const getServices = async () => {
+            const docRef = collection(db, 'services');
+            const docSnap = await getDocs(docRef);
 
-/**
- * @param {name, description, image, tags, price_start, price_end, note}
- * @returns void
- */
-function ServiceCard ({ content = null, action = null }) {
+            const temp = new Array();
+
+            docSnap.forEach((doc) => {
+                temp.push({ docId: doc.id, ...doc.data() });
+            });
+
+            setServiceList(temp);
+        };
+
+        getServices();
+    }, []);
+
+    if (!serviceList.length) {
+        return (
+            <div className="px-8">
+                <div className='flex flex-col p-8 gap-2 w-full h-36 bg-slate-100 animate-pulse'>
+                    <div className="w-full h-8 bg-slate-300"></div>
+                    <div className="w-full h-8 bg-slate-300"></div>
+                    <div className="w-full h-8 bg-slate-300"></div>
+                </div>
+            </div>
+        )
+    }
+
     return (
-        <div className={`bg-white text-black w-full h-full flex flex-col p-8  border-2 border-black drop-shadow-primary gap-8`}
-        >
-            <div className='flex flex-col w-full gap-4'>
-                <h1 className='text-xl font-bold'>{content.name}</h1>
-                <SecondaryButton label={content.tags} />
-                <p>{content.description}</p>
+        <>
+            <div className='flex justify-center items-center p-8 lg:px-24'>
+                <div className='flex flex-col lg:flex-row w-full h-full border-2 border-black bg-white drop-shadow-primary-xl rounded-lg overflow-hidden'>
+                    <div className='w-full h-[30vh] lg:w-2/5 lg:h-[80vh] flex flex-col  bg-indigo-500 border-b-2 lg:border-r-2 lg:border-b-0 border-black overflow-auto'>
+                        {
+                            serviceList.map((content, index) => {
+                                return (
+                                    <button className={`${index === activeServiceIndex ? 'bg-yellow-400 text-black font-bold' : ''} w-full p-2 text-white`} onClick={() => setActiveServiceIndex(index)} key={index}>
+                                        <p>{content.name}</p>
+                                    </button>
+                                )
+                            })
+                        }
+                    </div>
+                    <div className='w-full h-[80vh] bg-white overflow-auto'>
+                        <div className='h-2/4'>
+                            <img className='h-full w-full object-cover border-b-2 border-black' src={serviceList[activeServiceIndex].images[0].url} />
+                        </div>
+                        <div className='p-8 w-full h-2/4 flex flex-col gap-4 relative'>
+                            <div className='flex flex-col lg:flex-row gap-4 lg:items-center'>
+                                <p className='text-xl font-bold'>{serviceList[activeServiceIndex].name}</p>
+                                <div className='flex flex-row gap-1 items-center'>
+                                    <p>₱ {serviceList[activeServiceIndex].price_start}</p>
+                                    {
+                                        serviceList[activeServiceIndex].price_end !== 0 && (
+                                            <>
+                                                <p>-</p>
+                                                <p>₱ {serviceList[activeServiceIndex].price_end}</p>
+                                            </>
+                                        )
+                                    }
+                                    {
+                                        serviceList[activeServiceIndex].note !== '' && (
+                                            <p className='text-slate-400'>({serviceList[activeServiceIndex].note})</p>
+                                        )
+                                    }
+                                </div>
+                            </div>
+                            {
+                                serviceList[activeServiceIndex].tag !== '' && (
+                                    <p className='bg-white px-4 py-1 border-2 border-black w-fit rounded-full drop-shadow-primary'>{serviceList[activeServiceIndex].tag}</p>
+                                )
+                            }
+                            <p>{serviceList[activeServiceIndex].description}</p>
+                            <Link className='absolute bottom-8 primary-btn place-self-end mt-auto' to={'contact-us'}>Contact Us!</Link>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <TertiaryButton label={'Read More'} location={'/services'} CTA={true} />
-            </div>
-        </div>
+        </>
     )
 };
 
-const Services = () => {
-  return (
-    <div className='grid grid-cols-3 gap-8 px-24 py-12'>
-        {
-            TEST_DATA.map((data, index) => {
-                return (
-                    <ServiceCard content={data} key={index} />
-                )
-            })
-        }
-    </div>
-  )
-};
-
-export default Services
+export default Services;

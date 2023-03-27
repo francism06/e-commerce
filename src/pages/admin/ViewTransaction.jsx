@@ -77,7 +77,7 @@ const ViewTransaction = () => {
 
         const status = {
             ...DELIVERY_STATUS[index],
-            date_created: serverTimestamp
+            date_created: serverTimestamp()
         };
 
         await updateDoc(docRef, {
@@ -269,7 +269,7 @@ const ViewTransaction = () => {
                                 transactionDetails.status.map((status, index) => {
                                     return (
                                         <div className={`grid grid-cols-2 ${index === (transactionDetails.status.length - 1) ? '' : 'text-slate-600 font-light'}`} key={index}>
-                                            <p className={`${index === (transactionDetails.status.length - 1) ? 'font-bold' : ''}`}>{convertDateToString(status.date_created)}</p>
+                                            <p className={`${index === (transactionDetails.status.length - 1) ? 'font-bold' : ''}`}>{(status.date_created.toDate()).toLocaleDateString()}</p>
                                             <div className="flex flex-col">
                                                 <p className={`${index === (transactionDetails.status.length - 1) ? 'font-bold' : ''}`}>{status.name}</p>
                                                 <p>{status.description}</p>

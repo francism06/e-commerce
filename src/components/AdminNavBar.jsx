@@ -39,8 +39,8 @@ const AdminNavBar = () => {
                 </a>
 
                 <ul className="flex flex-col flex-1 gap-2">
-                    <li className="flex flex-row items-center gap-5 cursor-pointer ">
-                        <NavLink className={({ isActive }) => { return (isActive ? 'text-white bg-secondary rounded-md font-bold' : '') + 'flex flex-row gap-5 w-full px-2 py-4' }} to="/admin" end>
+                    <li className="flex flex-row items-center gap-5 cursor-pointer">
+                        <NavLink to="/admin" className={({ isActive }) => { return (isActive ? 'text-white bg-secondary rounded-md font-bold ' : '') + 'flex flex-row gap-5 w-full px-2 py-4' }} end>
                             <Icon icon="clarity:home-line" className='text-2xl' />
                             <p>Dashboard</p>
                         </NavLink>

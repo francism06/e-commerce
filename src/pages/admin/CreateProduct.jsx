@@ -47,7 +47,7 @@ const CreateProduct = () => {
 
     const handleSubmit = async () => {
         // Uploads to collection
-        const docRef = await addDoc(collection(db, 'products'), { ...productDetails, 'date_created': serverTimestamp }).then((docRef) => docRef.id);
+        const docRef = await addDoc(collection(db, 'products'), { ...productDetails, 'date_created': serverTimestamp() }).then((docRef) => docRef.id);
         const imageList = new Array();
 
         // Uploads images to storage
