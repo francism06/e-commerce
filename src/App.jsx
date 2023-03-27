@@ -34,15 +34,6 @@ import Login from "./pages/user/Login";
 import Register from "./pages/user/Register";
 
 const App = () => {
-  // useEffect(() => {
-  //   const user = JSON.parse(localStorage.getItem('user'));
-
-  //   if (user !== null && Object.keys(user).length !== 0) {
-  //     console.log(user);
-  //   }
-
-  // }, []);
-
   return (
     <Routes>
 

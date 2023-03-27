@@ -1,34 +1,55 @@
 import React, { useEffect, useState } from 'react'
 import { Icon } from '@iconify/react';
 import { useNavigate, Outlet, NavLink } from "react-router-dom";
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from '../config/firebase';
 
 const AdminNavBar = () => {
-    const [active, setActive] = useState(false);
-    const user = JSON.parse(localStorage.getItem('user'));
+    const [user, setUser] = useState({});
     const navigate = useNavigate();
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         localStorage.clear();
-
-        navigate('/');
+        await signOut(auth).then(() => location.reload());
     };
 
     /**
      * Checks if the user is admin then redirects to dashboard
      */
     useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const userDetails = JSON.parse(localStorage.getItem('user'));
 
-        if (user === null) {
-            navigate('/')
-        }
+                if (user.uid !== userDetails.uid) {
+                    localStorage.clear();
+                    signOut(auth).then(() => location.reload());
+                    return;
+                }
 
-        if (user !== null && Object.keys(user).length !== 0) {
+                setUser(userDetails);
+            } else {
+                localStorage.clear();
+                navigate('/');
+            }
+        });
+    }, []);
+
+    useEffect(() => {
+        if (Object.keys(user).length !== 0) {
             const isAdmin = user.is_admin;
 
             !isAdmin && navigate('/');
         }
+    }, [user]);
 
-    }, []);
+    // useEffect(() => {
+    //     if (user !== null && Object.keys(user).length !== 0) {
+    //         const isAdmin = user.is_admin;
+
+    //         !isAdmin && navigate('/');
+    //     }
+    // }, []);
 
     return (
         <>

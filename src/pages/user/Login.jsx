@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { db } from "../../config/firebase";
+import { db, auth } from "../../config/firebase";
 import {
     collection,
     getDocs,
@@ -10,7 +10,7 @@ import {
     deleteDoc,
     getDoc,
 } from "firebase/firestore";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { PrimaryButton } from "../../components/Elements";
 
@@ -22,7 +22,6 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const auth = getAuth();
         await signInWithEmailAndPassword(auth, email, password)
             .then(async (userCredential) => {
                 // Signed in 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link, useParams } from "react-router-dom";
-import { db } from "../../config/firebase";
+import { db, auth } from "../../config/firebase";
 import {
   doc,
   collection,
@@ -12,6 +12,7 @@ import {
   serverTimestamp,
   updateDoc
 } from "firebase/firestore";
+import { onAuthStateChanged, signOut, updatePassword } from "firebase/auth";
 
 const convertString = (string) => {
   return string !== '' && (string.charAt(0).toUpperCase() + string.slice(1)).replaceAll('_', ' ');
@@ -21,13 +22,15 @@ const Profile = () => {
   const [profileDetails, setProfileDetails] = useState({});
   const [currentProfileDetails, setCurrentProfileDetails] = useState({});
   const [purchaseHistory, setPurchaseHistory] = useState([]);
+  const [user, setUser] = useState({});
+  const [password, setPassword] = useState({ new_password: '', confirm_password: '' })
 
-  const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
-  const handleChange = (event) => {
+  const handleChangeProfileDetails = (event) => {
     setProfileDetails((prevState) => {
       return {
         ...prevState,
@@ -36,8 +39,21 @@ const Profile = () => {
     });
   };
 
+  const handleChangePassword = (event) => {
+    setPassword((prevState) => {
+      return {
+        ...prevState,
+        [event.target.name]: event.target.value
+      }
+    })
+  }
+
   const handleEditProfile = () => {
     setIsEditing((prevState) => !prevState);
+  };
+
+  const handleEditPassword = () => {
+    setIsChangingPassword((prevState) => !prevState);
   };
 
   const handleCancelProfile = () => {
@@ -45,53 +61,74 @@ const Profile = () => {
     handleEditProfile();
   };
 
+  const handleCancelPassword = () => {
+    setPassword({ new_password: '', confirm_password: '' });
+    handleEditPassword();
+  };
+
   /**
    * Update Firebase user details on submit.
    */
-  const handleSaveProfile = () => {
-    const updateUserProfile = async () => {
-      const userRef = doc(db, 'users', user.uid);
-      await updateDoc(userRef, profileDetails)
-    };
+  const handleSaveProfile = async () => {
+    const userRef = doc(db, 'users', user.uid);
+    await updateDoc(userRef, profileDetails)
 
-    updateUserProfile();
     setCurrentProfileDetails(profileDetails);
     handleEditProfile();
   };
 
-  const handleEditPassword = () => {
-    console.log('Edit password');
-  };
-
-  const handleLogout = () => {
-    localStorage.clear();
-    location.reload();
-  };
-
-  useEffect(() => {
-    if (user === null) {
-      navigate('/');
+  const handleSavePassword = async () => {
+    if (password.new_password === '' && password.confirm_password === '') {
       return;
     }
 
-    if (user !== null && Object.keys(user).length !== 0) {
-      const isAdmin = user.is_admin;
-
-      isAdmin && navigate('/admin');
+    if (password.new_password !== password.confirm_password) {
+      return;
     }
 
-    const getProfileDetails = async () => {
-      const userRef = doc(db, 'users', user.uid);
-      const userSnap = await getDoc(userRef);
+    const currUser = auth.currentUser;
+    await updatePassword(currUser, password.new_password).then(() => location.reload());
+  }
 
-      if (userSnap.exists()) {
-        setProfileDetails(userSnap.data());
-        setCurrentProfileDetails(userSnap.data());
+  const handleLogout = async () => {
+    localStorage.clear();
+    await signOut(auth).then(() => location.reload());
+  };
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const userDetails = JSON.parse(localStorage.getItem('user'));
+
+        if (user.uid !== userDetails.uid) {
+          localStorage.clear();
+          signOut(auth).then(() => location.reload());
+          return;
+        }
+
+        setUser(userDetails);
+      } else {
+        localStorage.clear();
+        navigate('/');
       }
-    };
-
-    getProfileDetails();
+    });
   }, []);
+
+  useEffect(() => {
+    if (Object.keys(user).length !== 0) {
+      const getProfileDetails = async () => {
+        const userRef = doc(db, 'users', user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          setProfileDetails(userSnap.data());
+          setCurrentProfileDetails(userSnap.data());
+        }
+      };
+
+      getProfileDetails();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (Object.keys(profileDetails).length !== 0) {
@@ -147,41 +184,64 @@ const Profile = () => {
           </div>
         </div>
         <div className="flex flex-col w-full bg-white border-2 border-black p-4 gap-4">
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-row gap-2">
-              <div className="flex flex-col w-full">
-                <label htmlFor="first_name">First Name</label>
-                <input value={profileDetails.first_name} onChange={handleChange} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="first_name" id="first_name" disabled={!isEditing} />
-              </div>
-              <div className="flex flex-col w-full">
-                <label htmlFor="last_name">Last Name</label>
-                <input value={profileDetails.last_name} onChange={handleChange} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="last_name" id="last_name" disabled={!isEditing} />
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="email_address">Email Address</label>
-              <input value={profileDetails.email_address} onChange={handleChange} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="email_address" id="email_address" disabled={!isEditing} />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="contact_number">Contact Number</label>
-              <input value={profileDetails.contact_number} onChange={handleChange} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="contact_number" id="contact_number" disabled={!isEditing} />
-            </div>
-            <div className="flex flex-col">
-              <label htmlFor="address">Address</label>
-              <input value={profileDetails.address} onChange={handleChange} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="address" id="address" disabled={!isEditing} />
-            </div>
-          </div>
           {
-            isEditing ? (
-              <div className="flex flex-row gap-4 justify-end">
-                <button onClick={handleCancelProfile} className="border-2 border-black bg-white px-4 py-2">Cancel</button>
-                <button onClick={handleSaveProfile} className="border-2 border-black bg-white px-4 py-2">Save</button>
+            !isChangingPassword ? (
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-row gap-2">
+                  <div className="flex flex-col w-full">
+                    <label htmlFor="first_name">First Name</label>
+                    <input value={profileDetails.first_name} onChange={handleChangeProfileDetails} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="first_name" id="first_name" disabled={!isEditing} />
+                  </div>
+                  <div className="flex flex-col w-full">
+                    <label htmlFor="last_name">Last Name</label>
+                    <input value={profileDetails.last_name} onChange={handleChangeProfileDetails} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="last_name" id="last_name" disabled={!isEditing} />
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="email_address">Email Address</label>
+                  <input value={profileDetails.email_address} onChange={handleChangeProfileDetails} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="email_address" id="email_address" disabled={!isEditing} />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="contact_number">Contact Number</label>
+                  <input value={profileDetails.contact_number} onChange={handleChangeProfileDetails} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="contact_number" id="contact_number" disabled={!isEditing} />
+                </div>
+                <div className="flex flex-col">
+                  <label htmlFor="address">Address</label>
+                  <input value={profileDetails.address} onChange={handleChangeProfileDetails} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="address" id="address" disabled={!isEditing} />
+                </div>
               </div>
             ) : (
-              <div className="flex flex-row gap-4 justify-end">
-                <button onClick={handleEditPassword} className="border-2 border-black bg-white px-4 py-2">Change Password</button>
-                <button onClick={handleEditProfile} className="border-2 border-black bg-white px-4 py-2">Edit Profile</button>
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                  <div className="flex flex-col">
+                    <label htmlFor="new_password">New Password</label>
+                    <input value={password.new_password} onChange={handleChangePassword} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="password" name="new_password" id="new_password" />
+                  </div>
+                  <div className="flex flex-col">
+                    <label htmlFor="confirm_password">Confirm Password</label>
+                    <input value={password.confirm_password} onChange={handleChangePassword} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="password" name="confirm_password" id="confirm_password" />
+                  </div>
+                </div>
+                <div className="flex flex-row gap-4 justify-end">
+                  <button onClick={handleCancelPassword} className="border-2 border-black bg-white px-4 py-2">Cancel</button>
+                  <button onClick={handleSavePassword} className="border-2 border-black bg-white px-4 py-2">Save</button>
+                </div>
               </div>
+            )
+          }
+          {
+            isChangingPassword ? null : (
+              isEditing ? (
+                <div className="flex flex-row gap-4 justify-end">
+                  <button onClick={handleCancelProfile} className="border-2 border-black bg-white px-4 py-2">Cancel</button>
+                  <button onClick={handleSaveProfile} className="border-2 border-black bg-white px-4 py-2">Save</button>
+                </div>
+              ) : (
+                <div className="flex flex-row gap-4 justify-end">
+                  <button onClick={handleEditPassword} className="border-2 border-black bg-white px-4 py-2">Change Password</button>
+                  <button onClick={handleEditProfile} className="border-2 border-black bg-white px-4 py-2">Edit Profile</button>
+                </div>
+              )
             )
           }
         </div>
