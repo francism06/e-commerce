@@ -5,8 +5,10 @@ export const ErrorModal = ({ setIsActive }) => {
     return (
         <div className='absolute flex justify-center items-center top-0 left-0 z-30 w-screen h-screen bg-slate-500/50'>
             <div className='w-1/4 p-4 bg-white border-2 border-black drop-shadow-primary'>
-                <div className='flex flex-row justify-center'>
-                    <p>Error</p>
+                <div className='flex flex-col justify-center gap-4'>
+                    <p className='text-xl'>We're sorry</p>
+                    <p className='text-gray-500'>Things don't appear to be working right now. Please use our mobile application if you want to pay using PayPal.</p>
+                    <button className='w-full bg-sky-700 py-2 text-white' onClick={setIsActive}>Close</button>
                 </div>
             </div>
         </div>

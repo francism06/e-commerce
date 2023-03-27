@@ -199,7 +199,7 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="email_address">Email Address</label>
-                  <input value={profileDetails.email_address} onChange={handleChangeProfileDetails} className="border-2 border-black p-2 bg-white disabled:bg-slate-200 transition-all enabled:focus:drop-shadow-tertiary enabled:drop-shadow-primary" type="text" name="email_address" id="email_address" disabled={!isEditing} />
+                  <p className="input-field bg-slate-200">{profileDetails.email_address}</p>
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor="contact_number">Contact Number</label>
