@@ -6,6 +6,15 @@ import {
     getDocs
 } from 'firebase/firestore';
 
+const displayPrice = (priceStart, priceEnd = null) => {
+    let priceString = `₱ ${priceStart}`;
+    if (priceEnd !== null && priceEnd !== 0) {
+        priceString += ` - ₱ ${priceEnd}`
+    }
+
+    return priceString;
+};
+
 const Services = () => {
     const [serviceList, setServiceList] = useState([]);
     const [activeServiceIndex, setActiveServiceIndex] = useState(0);
@@ -56,21 +65,13 @@ const Services = () => {
                     </div>
                     <div className='w-full h-[80vh] bg-white overflow-auto'>
                         <div className='h-2/4'>
-                            <img className='h-full w-full object-cover border-b-2 border-black' src={serviceList[activeServiceIndex].images[0].url} />
+                            <img className='h-full w-full object-cover border-b-2 border-black' src={serviceList[activeServiceIndex].images.length ? serviceList[activeServiceIndex].images[0].url : 'More-Service.jpg'} />
                         </div>
                         <div className='p-8 w-full h-2/4 flex flex-col gap-4 relative'>
                             <div className='flex flex-col lg:flex-row gap-4 lg:items-center'>
                                 <p className='text-xl font-bold'>{serviceList[activeServiceIndex].name}</p>
                                 <div className='flex flex-row gap-1 items-center'>
-                                    <p>₱ {serviceList[activeServiceIndex].price_start}</p>
-                                    {
-                                        serviceList[activeServiceIndex].price_end !== 0 && (
-                                            <>
-                                                <p>-</p>
-                                                <p>₱ {serviceList[activeServiceIndex].price_end}</p>
-                                            </>
-                                        )
-                                    }
+                                    <p>{displayPrice(serviceList[activeServiceIndex].price_start, serviceList[activeServiceIndex].price_end)}</p>
                                     {
                                         serviceList[activeServiceIndex].note !== '' && (
                                             <p className='text-slate-400'>({serviceList[activeServiceIndex].note})</p>

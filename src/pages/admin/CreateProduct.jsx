@@ -21,17 +21,6 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
  * quantity
  */
 
-// const DisplayImage = ({ image, index, handleRemoveImage }) => {
-//     return (
-//         <button onClick={() => handleRemoveImage(index)} className="flex justify-center items-center relative w-full h-72 overflow-hidden border border-gray-500  cursor-pointer" key={index}>
-//             <div className="opacity-0 hover:opacity-100 flex justify-center items-center absolute w-full h-full bg-slate-800/30 transition-all">
-//                 <p className="w-fit p-2 bg-red-600 text-white z-[1] ">Remove</p>
-//             </div>
-//             <img src={image.display} className="object-contain w-full h-72" />
-//         </button>
-//     )
-// };
-
 const CreateProduct = () => {
     const details = {
         'name': '',

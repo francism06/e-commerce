@@ -15,6 +15,8 @@ import AdminCreateService from "./pages/admin/CreateService";
 import AdminEditService from "./pages/admin/EditService";
 import AdminTransactions from "./pages/admin/Transactions";
 import AdminViewTransactions from "./pages/admin/ViewTransaction";
+import AdminManageUsers from "./pages/admin/ManageUsers";
+import AdminViewUser from "./pages/admin/ViewUser";
 
 // User Components
 import Home from "./pages/user/Home";
@@ -27,7 +29,6 @@ import ContactUs from "./pages/user/ContactUs";
 import Profile from "./pages/user/Profile";
 import Cart from "./pages/user/Cart";
 import Tracking from "./pages/user/Tracking";
-import ManageUsers from "./pages/admin/ManageUsers";
 
 import Login from "./pages/user/Login";
 import Register from "./pages/user/Register";
@@ -71,7 +72,8 @@ const App = () => {
         <Route path="products/edit/:id" element={<AdminEditProduct />} />
         <Route path="transactions" element={<AdminTransactions />} />
         <Route path="transactions/:id" element={<AdminViewTransactions />} />
-        <Route path="manage-users" element={<ManageUsers />} />
+        <Route path="manage-users" element={<AdminManageUsers />} />
+        <Route path="manage-users/:id" element={<AdminViewUser />} />
       </Route>
 
       <Route path="*" element={<div>Page not Found!</div>} />
