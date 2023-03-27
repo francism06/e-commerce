@@ -8,8 +8,12 @@ import {
   doc,
   deleteDoc,
 } from "firebase/firestore";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Doughnut } from "react-chartjs-2";
 
-function Dashboard() {
+ChartJS.register(ArcElement, Tooltip, Legend);
+
+const Dashboard = () => {
   return (
     <div className="w-full">
       <p>Dashboard</p>

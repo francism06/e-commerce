@@ -94,7 +94,6 @@ const Products = () => {
                         <td className="p-4 border-y border-slate-200">
                           <div className="flex flex-col">
                             <p className="font-bold">{product.name}</p>
-                            <p className="text-slate-600">{product.description}</p>
                           </div>
                         </td>
                         <td className={`p-4 text-center border-y border-slate-200 ${!product.quantity && 'text-red-500'} `}><p>{parseInt(product.quantity)}</p></td>
