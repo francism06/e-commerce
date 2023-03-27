@@ -118,8 +118,6 @@ const Transactions = () => {
               transactions.map((transaction, index) => {
                 const time = new Date(transaction.date_created.seconds * 1000 + transaction.date_created.nanoseconds / 1000000).toLocaleDateString();
 
-                console.log(transaction);
-
                 return (
                   <tr key={index} className="bg-white">
                     <td className="p-4 text-left border-l border-y border-slate-200"><Link className="text-blue-400 underline" to={transaction.docId} state={{ transactionDetails: transaction }}>{transaction.docId}</Link></td>

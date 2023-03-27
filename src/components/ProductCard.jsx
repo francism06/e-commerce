@@ -113,10 +113,6 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
         setIsSelected(false);
     }, [selectedItems]);
 
-    useEffect(() => {
-        console.log('Product Card', productDetails);
-    }, [productDetails]);
-
     if (!Object.keys(productDetails).length) {
         return (
             <div className='flex flex-col p-8 gap-2 w-full h-36 bg-slate-100 animate-pulse'>
