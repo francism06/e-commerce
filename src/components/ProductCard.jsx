@@ -123,44 +123,47 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
         )
     }
 
-    return (
-        <div className='p-2 flex flex-row gap-2 w-full h-full bg-white border-2 border-black drop-shadow-primary'>
-            <div>
-                <div className="h-full flex justify-center">
-                    <input checked={isSelected} onChange={handleSelect} type="checkbox" name="select-product" id="select-product" className="flex h-full" />
-                </div>
-            </div>
-            <div className="w-full flex flex-row items-center gap-3">
-                {
-                    productDetails.product_details?.images && (
-                        <div className="w-24 h-24 overflow-hidden">
-                            <img className="w-24 h-24 object-contain" src={productDetails.product_details.images.length ? productDetails.product_details.images[0].url : '/Logo.png'} />
-                        </div>
-                    )
-                }
-                <div className="h-full flex flex-1 flex-col justify-center gap-2 font-bold">
-                    <p>{productDetails.product_details.name}</p>
-                    <p className="text-xs font-light text-slate-500">{productDetails.product_details.description}</p>
-                </div>
-                <div className="w-20 flex justify-center items-center">
-                    <p>₱ {productDetails.product_details.price}</p>
-                </div>
-                <div className="flex h-full items-center">
-                    <div className="h-fit flex flex-row bg-white">
-                        <button onClick={handleMinus} className="border-y-2 border-l-2 border-black px-4 py-2 disabled:bg-slate-400 active:bg-secondary" disabled={quantity <= 1}>-</button>
-                        <input onChange={handleChange} className="border-2 text-center w-12 border-black px-2 py-2 flex focus:outline-none" type="text" id="quantity" name="quantity" value={quantity} />
-                        <button onClick={handleAdd} className="border-y-2 border-r-2 border-black px-4 py-2 disabled:bg-slate-400 active:bg-secondary" disabled={quantity >= productDetails.product_details.quantity} >+</button>
+    if (productDetails.product_details !== undefined) {
+        return (
+            <div className='p-2 flex flex-row gap-2 w-full h-full bg-white border-2 border-black drop-shadow-primary'>
+                <div>
+                    <div className="h-full flex justify-center">
+                        <input checked={isSelected} onChange={handleSelect} type="checkbox" name="select-product" id="select-product" className="flex h-full" />
                     </div>
                 </div>
-                <div className="w-20 flex justify-center items-center">
-                    <p>₱ {productDetails.total_price}</p>
-                </div>
-                <div className="w-20 flex justify-center items-center">
-                    <button onClick={() => handleOpenDialogue(productDetails.docRef)} className="text-red-500 active:text-red-900 text-xl">
-                        <Icon className="hover:scale-110 transition-all" icon="clarity:trash-solid" />
-                    </button>
+                <div className="w-full flex flex-row items-center gap-3">
+                    {
+                        productDetails.product_details?.images && (
+                            <div className="w-24 h-24 overflow-hidden">
+                                <img className="w-24 h-24 object-contain" src={productDetails.product_details.images.length ? productDetails.product_details.images[0].url : '/Logo.png'} />
+                            </div>
+                        )
+                    }
+                    <div className="h-full flex flex-1 flex-col justify-center gap-2 font-bold">
+                        <p>{productDetails.product_details.name}</p>
+                        <p className="text-xs font-light text-slate-500">{productDetails.product_details.description}</p>
+                    </div>
+                    <div className="w-20 flex justify-center items-center">
+                        <p>₱ {productDetails.product_details.price}</p>
+                    </div>
+                    <div className="flex h-full items-center">
+                        <div className="h-fit flex flex-row bg-white">
+                            <button onClick={handleMinus} className="border-y-2 border-l-2 border-black px-4 py-2 disabled:bg-slate-400 active:bg-secondary" disabled={quantity <= 1}>-</button>
+                            <input onChange={handleChange} className="border-2 text-center w-12 border-black px-2 py-2 flex focus:outline-none" type="text" id="quantity" name="quantity" value={quantity} />
+                            <button onClick={handleAdd} className="border-y-2 border-r-2 border-black px-4 py-2 disabled:bg-slate-400 active:bg-secondary" disabled={quantity >= productDetails.product_details.quantity} >+</button>
+                        </div>
+                    </div>
+                    <div className="w-20 flex justify-center items-center">
+                        <p>₱ {productDetails.total_price}</p>
+                    </div>
+                    <div className="w-20 flex justify-center items-center">
+                        <button onClick={() => handleOpenDialogue(productDetails.docRef)} className="text-red-500 active:text-red-900 text-xl">
+                            <Icon className="hover:scale-110 transition-all" icon="clarity:trash-solid" />
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
+
 }
