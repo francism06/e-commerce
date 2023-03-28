@@ -83,14 +83,14 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
                     const itemRef = doc(db, 'users', uid);
                     await updateDoc(doc(itemRef, 'items', productDetails.docRef), {
                         quantity: quantity,
-                        total_price: quantity * parseInt(productDetails.price)
+                        total_price: quantity * parseInt(productDetails.product_details.price)
                     });
 
                     setProductDetails((prevState) => {
                         return {
                             ...prevState,
                             quantity: quantity,
-                            total_price: quantity * parseInt(productDetails.price)
+                            total_price: quantity * parseInt(productDetails.product_details.price)
                         };
                     })
                 };
@@ -112,6 +112,18 @@ export const ProductCard = ({ user, item, handleSelectItem, handleUpdateQuantity
 
         setIsSelected(false);
     }, [selectedItems]);
+
+    useEffect(() => {
+        if (Object.keys(productDetails).length && productDetails.product_details === undefined) {
+            const removeItem = async () => {
+                const userRef = doc(db, 'users', uid);
+                const itemRef = doc(userRef, 'items', productDetails.docRef);
+                await deleteDoc(itemRef);
+            }
+
+            removeItem();
+        }
+    }, [productDetails]);
 
     if (!Object.keys(productDetails).length) {
         return (
