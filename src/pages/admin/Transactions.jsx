@@ -56,13 +56,19 @@ const getPaymentMethod = (value) => {
   return PAYMENT_METHOD[PAYMENT_METHOD.findIndex((payment) => payment.method === value)]?.label;
 };
 
-const convertDateToString = (date) => {
-  return `${new Date(date).toDateString()} | ${new Date(date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
-};
+const displayDate = (date) => {
+  try {
+    const time = new Date(date.seconds * 1000 + date.nanoseconds / 1000000).toLocaleDateString();
 
-// const getDeliveryStatus = (value) => {
-//   const index = DELIVERY_STATUS
-// }
+    if (time === 'Invalid Date') {
+      throw new Error('Wrong format');
+    }
+
+    return time;
+  } catch (error) {
+    return new Date(date).toLocaleDateString();
+  }
+}
 
 const Transactions = () => {
   const [transactions, setTransactions] = useState([]);
@@ -116,12 +122,10 @@ const Transactions = () => {
           {
             transactions.length && (
               transactions.map((transaction, index) => {
-                const time = new Date(transaction.date_created.seconds * 1000 + transaction.date_created.nanoseconds / 1000000).toLocaleDateString();
-
                 return (
                   <tr key={index} className="bg-white">
                     <td className="p-4 text-left border-l border-y border-slate-200"><Link className="text-blue-400 underline" to={transaction.docId} state={{ transactionDetails: transaction }}>{transaction.docId}</Link></td>
-                    <td className="p-4 border-y border-slate-200"><p>{time}</p></td>
+                    <td className="p-4 border-y border-slate-200"><p>{displayDate(transaction.date_created)}</p></td>
                     <td className="p-4 border-y border-slate-200"><p>{getPaymentMethod(transaction.payment_method)}</p></td>
                     <td className="p-4 border-y border-slate-200"><p>₱ {transaction.total_price}</p></td>
                     <td className="p-4 border-y border-slate-200"><p>{convertString(transaction.delivery_status)}</p></td>

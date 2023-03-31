@@ -13,7 +13,8 @@ import {
     where,
     orderBy,
     arrayUnion,
-    serverTimestamp
+    serverTimestamp,
+    Timestamp
 } from "firebase/firestore";
 import { Icon } from "@iconify/react";
 
@@ -51,9 +52,21 @@ const DELIVERY_STATUS = [
     }
 ];
 
-const convertDateToString = (date) => {
-    return `${new Date(date).toDateString()} | ${new Date(date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
-};
+const displayDate = (date) => {
+    try {
+      const datetime = `${(date.toDate()).toDateString()} | ${(date.toDate()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+  
+      if (time === 'Invalid Date') {
+        throw new Error('Wrong format');
+      }
+
+      return datetime;
+    } catch (error) {
+      const datetime = `${new Date(date).toDateString()} | ${new Date(date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+
+      return datetime;
+    }
+  }
 
 const ViewTransaction = () => {
     const [transactionDetails, setTransactionDetails] = useState({});
@@ -77,7 +90,7 @@ const ViewTransaction = () => {
 
         const status = {
             ...DELIVERY_STATUS[index],
-            date_created: serverTimestamp()
+            date_created: Timestamp.now()
         };
 
         await updateDoc(docRef, {
@@ -267,11 +280,9 @@ const ViewTransaction = () => {
                         {
                             transactionDetails.status && transactionDetails.status.length ? (
                                 transactionDetails.status.map((status, index) => {
-                                    const datetime = `${(status.date_created.toDate()).toDateString()} | ${(status.date_created.toDate()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
-
                                     return (
                                         <div className={`grid grid-cols-2 ${index === (transactionDetails.status.length - 1) ? '' : 'text-slate-600 font-light'}`} key={index}>
-                                            <p className={`${index === (transactionDetails.status.length - 1) ? 'font-bold' : ''}`}>{datetime}</p>
+                                            <p className={`${index === (transactionDetails.status.length - 1) ? 'font-bold' : ''}`}>{displayDate(status.date_created)}</p>
                                             <div className="flex flex-col">
                                                 <p className={`${index === (transactionDetails.status.length - 1) ? 'font-bold' : ''}`}>{status.name}</p>
                                                 <p>{status.description}</p>

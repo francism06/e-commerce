@@ -4,6 +4,7 @@ import { db } from "../config/firebase";
 import {
     doc,
     updateDoc,
+    deleteDoc,
 } from "firebase/firestore";
 import { Icon } from "@iconify/react";
 

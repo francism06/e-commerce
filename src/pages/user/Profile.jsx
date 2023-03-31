@@ -18,6 +18,14 @@ const convertString = (string) => {
   return string !== '' && (string.charAt(0).toUpperCase() + string.slice(1)).replaceAll('_', ' ');
 };
 
+const displayDate = (date) => {
+  try {
+    return (date.toDate()).toLocaleDateString();
+  } catch (error) {
+    return new Date(date).toLocaleDateString();
+  }
+}
+
 const Profile = () => {
   const [profileDetails, setProfileDetails] = useState({});
   const [currentProfileDetails, setCurrentProfileDetails] = useState({});
@@ -269,7 +277,7 @@ const Profile = () => {
                     <tr key={index} className="text-center">
                       <td className="p-2 border-b-2 border-b-black"><p>{product.docId}</p></td>
                       <td className="p-2 border-b-2 border-b-black text-left"><p>{product?.product_details?.name}</p></td>
-                      <td className="p-2 border-b-2 border-b-black"><p>{(product.date_created.toDate()).toLocaleDateString()}</p></td>
+                      <td className="p-2 border-b-2 border-b-black"><p>{displayDate(product.date_created)}</p></td>
                       <td className="p-2 border-b-2 border-b-black"><p>{convertString(product?.delivery_status)}</p></td>
                       <td className="p-2 border-b-2 border-b-black"><p>₱ {product.total_price}</p></td>
                       <td className="p-2 border-b-2 border-b-black">
